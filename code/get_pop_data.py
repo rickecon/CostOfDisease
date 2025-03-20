@@ -20,6 +20,15 @@ def baseline_pop(p, un_country_code="710"):
         imm_rates (np.array): immigration rates
     """
     # get initial population objects
+    pop_dist, pre_pop_dist = demographics.get_pop(
+        p.E,
+        p.S,
+        0,
+        99,
+        country_id=un_country_code,
+        start_year=p.start_year,
+        end_year=p.start_year + 1,
+    )
     fert_rates = demographics.get_fert(
         p.E + p.S,
         0,
@@ -46,6 +55,7 @@ def baseline_pop(p, un_country_code="710"):
         fert_rates=fert_rates,
         mort_rates=mort_rates,
         infmort_rates=infmort_rates,
+        pop_dist=pop_dist,
         start_year=p.start_year,
         end_year=p.start_year + 1,
         graph=False,
@@ -63,10 +73,10 @@ def baseline_pop(p, un_country_code="710"):
         infmort_rates=infmort_rates,
         imm_rates=imm_rates,
         infer_pop=True,
-        pop_dist=None,
-        pre_pop_dist=None,
+        pop_dist=pop_dist[:1, :],
+        pre_pop_dist=pre_pop_dist,
         initial_data_year=p.start_year,
-        final_data_year=p.start_year + 1,
+        final_data_year=p.start_year+1,
         GraphDiag=False,
     )
 
@@ -127,7 +137,7 @@ def disease_pop(
         dict: population objects
 
     """
-    pop_dist, _ = demographics.get_pop(
+    pop_dist, pre_pop_dist = demographics.get_pop(
         p.E,
         p.S,
         0,
@@ -161,8 +171,8 @@ def disease_pop(
         infmort_rates=infmort_rates,
         imm_rates=imm_rates,
         infer_pop=True,
-        pop_dist=None,
-        pre_pop_dist=None,
+        pop_dist=pop_dist[:1, :],
+        pre_pop_dist=pre_pop_dist,
         initial_data_year=p.start_year,
         final_data_year=p.start_year + 1,
         GraphDiag=False,

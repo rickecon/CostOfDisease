@@ -75,7 +75,7 @@ def main():
     """
 
     # create new Specifications object for reform simulation
-    p2 = copy.deepcopy(p, UN_COUNTRY_CODE)
+    p2 = copy.deepcopy(p)
     p2.baseline = False
     p2.output_base = reform_dir
 

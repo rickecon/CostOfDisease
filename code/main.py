@@ -8,6 +8,7 @@ import os
 import json
 import time
 import copy
+import numpy as np
 from importlib.resources import files
 import matplotlib.pyplot as plt
 from ogcore.parameters import Specifications
@@ -29,9 +30,9 @@ def main():
 
     # Directories to save data
     CUR_DIR = os.path.dirname(os.path.realpath(__file__))
-    save_dir = os.path.join(CUR_DIR, "OG-ZAF-Example")
-    base_dir = os.path.join(save_dir, "OUTPUT_BASELINE")
-    reform_dir = os.path.join(save_dir, "OUTPUT_REFORM")
+    save_dir = os.path.join(CUR_DIR, "CostOutput")
+    base_dir = os.path.join(save_dir, "BASELINE")
+    reform_dir = os.path.join(save_dir, "REFORM")
     plot_path = os.path.join(save_dir, "Plots")
     if not os.path.exists(plot_path):
         os.makedirs(plot_path)
@@ -58,14 +59,14 @@ def main():
     p.update_specifications(defaults)
 
     # get baseline population data (rather than use what is in JSON)
-    pop_dict, fert_rates, mort_rates, infmort_rates, imm_rates = (
-        get_pop_data.baseline_pop(p)
-    )
-    p.update_specifications(pop_dict)
+    # pop_dict, fert_rates, mort_rates, infmort_rates, imm_rates = (
+    #     get_pop_data.baseline_pop(p)
+    # )
+    # p.update_specifications(pop_dict)
 
     # Run model
     start_time = time.time()
-    runner(p, time_path=True, client=client)
+    # runner(p, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
 
     """
@@ -80,20 +81,20 @@ def main():
     p2.output_base = reform_dir
 
     # Find new population with excess deaths
-    new_pop_dict = get_pop_data.disease_pop(
-        p2,
-        fert_rates,
-        mort_rates,
-        infmort_rates,
-        imm_rates,
-        UN_COUNTRY_CODE,
-        excess_deaths=202_693,
-    )
-    p2.update_specifications(new_pop_dict)
+    # new_pop_dict = get_pop_data.disease_pop(
+    #     p2,
+    #     fert_rates,
+    #     mort_rates,
+    #     infmort_rates,
+    #     imm_rates,
+    #     UN_COUNTRY_CODE,
+    #     excess_deaths=202_693,
+    # )
+    # p2.update_specifications(new_pop_dict)
 
     # Run model
     start_time = time.time()
-    runner(p2, time_path=True, client=client)
+    # runner(p2, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
     client.close()
 
@@ -121,6 +122,7 @@ def main():
     }
 
     # Create tables and plots
+    forecast = np.ones(150) * 100
     create_plots_tables.plots(
         base_tpi, base_params, reform_dict, forecast, plot_path
     )

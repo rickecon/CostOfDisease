@@ -76,7 +76,7 @@ def baseline_pop(p, un_country_code="710"):
         pop_dist=pop_dist[:1, :],
         pre_pop_dist=pre_pop_dist,
         initial_data_year=p.start_year,
-        final_data_year=p.start_year+1,
+        final_data_year=p.start_year + 1,
         GraphDiag=False,
     )
 

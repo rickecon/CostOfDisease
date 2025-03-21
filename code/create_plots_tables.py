@@ -36,23 +36,50 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     tpi_list = [base_tpi] + [
         reform_dict[k]["tpi_vars"] for k in reform_dict.keys()
     ]
+    param_list = [base_params] + [
+        reform_dict[k]["params"] for k in reform_dict.keys()
+    ]
     labels_list = ["Baseline"] + [k for k in reform_dict.keys()]
+    # Plot mort rates in different scenarios
     fig = pp.plot_mort_rates(
-        tpi_list,
+        param_list,
         labels=labels_list,
         years=[BASELINE_YEAR_TO_PLOT],
         include_title=False,
         path=plot_path,
     )
+    # Plot population distribution in current period and in 25 years
+    # under different scenarios
+    fig = pp.plot_population(
+        base_params,
+        years_to_plot=[
+            int(base_params.start_year),
+            int(base_params.start_year + 25),
+        ],
+        include_title=False,
+        path=None,
+    )
+    fig.savefig(os.path.join(plot_path, "pop_dist_baseline.png"), dpi=300)
+    for k in reform_dict.keys():
+        fig = pp.plot_population(
+            reform_dict[k]["params"],
+            years_to_plot=[
+                int(base_params.start_year),
+                int(base_params.start_year + 25),
+            ],
+            include_title=False,
+            path=None,
+        )
+        fig.savefig(os.path.join(plot_path, "pop_dist_{k}.png"), dpi=300)
+    # TODO: Plot cumulative excess deaths
 
     # Create table of level changes in macro variables
     # Read in CBO long-term forecast  # TODO: find some forecast of South
     # African GDP over a long time period (or extrapolate from some shorter term forecast)
-    forecast = XXXX
     # compute percentage changes in macro variables
     GDP_series = {
-        "Baseline": forecast,
-        "Pct changes": {},
+        "Baseline Forecast": forecast[:NUM_YEARS_NPV],
+        "Pct Changes": {},
         "Levels": {},
         "Diffs": {},
     }
@@ -64,30 +91,22 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
             reform_dict[k]["params"],
             output_vars=["Y"],
         )
-        GDP_series["Levels"][k] = GDP_series["Baseline Forecast"] * (
-            1 + GDP_series["Pct Changes"][k]
-        )
+        GDP_series["Levels"][k] = GDP_series["Baseline Forecast"][
+            :NUM_YEARS_NPV
+        ] * (1 + GDP_series["Pct Changes"][k]["Y"][:NUM_YEARS_NPV])
         GDP_series["Diffs"][k] = (
-            GDP_series["Levels"][k] - GDP_series["Baseline Forecast"]
+            GDP_series["Levels"][k][:NUM_YEARS_NPV]
+            - GDP_series["Baseline Forecast"][:NUM_YEARS_NPV]
         )
 
     # Find avg change in GDP from begin_window to end_window
     results_first_N_years = {}
     for k in reform_dict.keys():
-        results_first_N_years[k] = (
-            GDP_series["Diffs"][k]
-            .loc[
-                (
-                    GDP_series["Diffs"][k].index
-                    >= (YEAR_RANGE_MIN - reform_dict[k]["params"].start_year)
-                )
-                & (
-                    GDP_series["Diffs"][k].index
-                    <= (YEAR_RANGE_MAX - reform_dict[k]["params"].start_year)
-                )
-            ]
-            .mean()
-        )
+        results_first_N_years[k] = GDP_series["Diffs"][k][
+            YEAR_RANGE_MIN
+            - reform_dict[k]["params"].start_year : YEAR_RANGE_MIN
+            - reform_dict[k]["params"].start_year
+        ].mean()
     # TODO: save this table to disk
 
     # Find NPV of levels of GDP over NUM_YEARS_NPV years
@@ -100,11 +119,7 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
         results_NPV[k] = {}
         for r in npv_dict["Discount Rate"]:
             results_NPV[k][r] = (
-                (
-                    GDP_series["Diffs"][k].loc[
-                        (GDP_series["Diffs"][k][:NUM_YEARS_NPV])
-                    ]
-                )
+                GDP_series["Diffs"][k][:NUM_YEARS_NPV]
                 * (1 + r) ** np.arange(NUM_YEARS_NPV)
             ).sum()
     # TODO: save this table to disk: rows are different r, columns are different reform scenarios
@@ -124,13 +139,13 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     years = np.arange(base_params.start_year, TIME_SERIES_PLOT_END_YEAR)
     plt.plot(
         years,
-        np.log(GDP_series["Baseline"][:idx]),
+        np.log(GDP_series["Baseline Forecast"][:idx]),
         label="Baseline",
     )
     for k in reform_dict.keys():
         plt.plot(
             years,
-            np.log(GDP_series[k]["Levels"][:idx]),
+            np.log(GDP_series["Levels"][k][:idx]),
             label=k,
         )
     plt.legend()
@@ -145,7 +160,7 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     for k in reform_dict.keys():
         plt.plot(
             years,
-            GDP_series[k]["Diffs"][:idx],
+            GDP_series["Diffs"][k][:idx],
             label=k,
         )
     plt.legend()

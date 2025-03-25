@@ -90,22 +90,28 @@ def main():
     p2.update_specifications(new_pop_dict)
 
     # Apply productivity losses for the bottom 70% of the population
+    # these are a linear interpolation of the four scenario values
     productivity_adjustments = {
-        2025: -0.000278,
-        2026: -0.000401,
-        2027: -0.000524,
-        2028: -0.000647,
-        2029: -0.000770,
-        2030: -0.000893,
-        2031: -0.000957,
-        2032: -0.001021,
-        2033: -0.001085,
-        2034: -0.001150,
-        2035: -0.001214,
+        2025: 0.000018,
+        2026: 0.00007,
+        2027: 0.000122,
+        2028: 0.000174,
+        2029: 0.000226,
+        2030: 0.000278,
+        2031: 0.000401,
+        2032: 0.000524,
+        2033: 0.000647,
+        2034: 0.00077,
+        2035: 0.000893,
+        2036: 0.000957,
+        2037: 0.001021,
+        2038: 0.001085,
+        2039: 0.00115,
+        2040: 0.001214,
     }
 
     def get_adjustment(year):
-        # If year not in the dictionary (i.e. year > 2035), use the last value
+        # If year not in the dictionary (i.e. year > 2040), use the last value
         return productivity_adjustments.get(
             year,
             productivity_adjustments[max(productivity_adjustments.keys())],

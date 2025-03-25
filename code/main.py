@@ -49,7 +49,9 @@ def main():
         output_base=base_dir,
     )
     # Update parameters for baseline from default json file
-    with files("ogzaf").joinpath("ogzaf_default_parameters.json").open("r") as file:
+    with files("ogzaf").joinpath("ogzaf_default_parameters.json").open(
+        "r"
+    ) as file:
         defaults = json.load(file)
     p.update_specifications(defaults)
 
@@ -87,30 +89,33 @@ def main():
     )
     p2.update_specifications(new_pop_dict)
 
-    # Apply productivity adjustments for the bottom 70% of the population
+    # Apply productivity losses for the bottom 70% of the population
     productivity_adjustments = {
-        2025: 0.000278,
-        2026: 0.000401,
-        2027: 0.000524,
-        2028: 0.000647,
-        2029: 0.000770,
-        2030: 0.000893,
-        2031: 0.000957,
-        2032: 0.001021,
-        2033: 0.001085,
-        2034: 0.001150,
-        2035: 0.001214,
+        2025: -0.000278,
+        2026: -0.000401,
+        2027: -0.000524,
+        2028: -0.000647,
+        2029: -0.000770,
+        2030: -0.000893,
+        2031: -0.000957,
+        2032: -0.001021,
+        2033: -0.001085,
+        2034: -0.001150,
+        2035: -0.001214,
     }
 
-    # Iterate over the years and apply the productivity adjustments
-    for year, adjustment in productivity_adjustments.items():
-        t = year - p2.start_year  # Convert year to model time index
-        if (
-            t >= 0 and t < p2.e.shape[0]
-        ):  # Ensure the year is within the simulation range
-            p2.e[t, :, :3] = p.e[t, :, :3] * (
-                1 - adjustment
-            )  # Apply adjustment to bottom 70%
+    def get_adjustment(year):
+        # If year not in the dictionary (i.e. year > 2035), use the last value
+        return productivity_adjustments.get(
+            year,
+            productivity_adjustments[max(productivity_adjustments.keys())],
+        )
+
+    # Iterate over each simulation year assuming simulation starts at 2025
+    for t in range(p2.e.shape[0]):
+        current_year = p2.start_year + t  # e.g. 2025, 2026, ...
+        adjustment = get_adjustment(current_year)
+        p2.e[t, :, :3] = p.e[t, :, :3] * (1 + adjustment)
 
     # Run model
     start_time = time.time()
@@ -125,8 +130,12 @@ def main():
     """
     base_tpi = safe_read_pickle(os.path.join(base_dir, "TPI", "TPI_vars.pkl"))
     base_params = safe_read_pickle(os.path.join(base_dir, "model_params.pkl"))
-    reform_tpi = safe_read_pickle(os.path.join(reform_dir, "TPI", "TPI_vars.pkl"))
-    reform_params = safe_read_pickle(os.path.join(reform_dir, "model_params.pkl"))
+    reform_tpi = safe_read_pickle(
+        os.path.join(reform_dir, "TPI", "TPI_vars.pkl")
+    )
+    reform_params = safe_read_pickle(
+        os.path.join(reform_dir, "model_params.pkl")
+    )
     # put reform(s) in dict
     # If do other sims (e.g, with high and low forecasts of excess deaths), they
     # can be added to this dictionary
@@ -138,7 +147,9 @@ def main():
     }
 
     # Create tables and plots
-    create_plots_tables.plots(base_tpi, base_params, reform_dict, forecast, plot_path)
+    create_plots_tables.plots(
+        base_tpi, base_params, reform_dict, forecast, plot_path
+    )
 
 
 if __name__ == "__main__":

@@ -67,7 +67,7 @@ def main():
 
     # Run model
     start_time = time.time()
-    runner(p, time_path=True, client=client)
+    # runner(p, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
 
     """
@@ -129,9 +129,8 @@ def main():
 
     # Run model
     start_time = time.time()
-    runner(p2, time_path=True, client=client)
+    # runner(p2, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
-    client.close()
 
     """
     ---------------------------------------------------------------------------
@@ -169,9 +168,8 @@ def main():
 
     # Run model
     start_time = time.time()
-    runner(p3, time_path=True, client=client)
+    # runner(p3, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
-    client.close()
 
     """
     ---------------------------------------------------------------------------
@@ -209,7 +207,7 @@ def main():
 
     # Run model
     start_time = time.time()
-    runner(p4, time_path=True, client=client)
+    # runner(p4, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
     client.close()
 

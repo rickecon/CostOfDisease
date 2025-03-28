@@ -27,7 +27,7 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     """
 
     # Set constants
-    BASELINE_YEAR_TO_PLOT = 2035
+    BASELINE_YEAR_TO_PLOT = 2040
     TIME_SERIES_PLOT_END_YEAR = 2100
     NUM_YEARS_NPV = 100
     YEAR_RANGE_MIN = 2040
@@ -49,6 +49,16 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
         include_title=False,
         path=plot_path,
     )
+    # Plot differences in productivity profiles
+    fig = pp.plot_ability_profiles(
+        base_params,
+        p2=reform_dict["Median Excess Deaths"]["params"],
+        log_scale=True,
+        t=BASELINE_YEAR_TO_PLOT - base_params.start_year,
+        include_title=False,
+        path=plot_path,
+    )
+
     # Plot population distribution in current period and in 25 years
     # under different scenarios
     fig = pp.plot_population(
@@ -62,7 +72,7 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     )
     fig.savefig(os.path.join(plot_path, "pop_dist_baseline.png"), dpi=300)
     for k in reform_dict.keys():
-        fig = pp.plot_population(
+        fig2 = pp.plot_population(
             reform_dict[k]["params"],
             years_to_plot=[
                 int(base_params.start_year),
@@ -71,7 +81,20 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
             include_title=False,
             path=None,
         )
-        fig.savefig(os.path.join(plot_path, f"pop_dist_{k}.png"), dpi=300)
+        fig2.savefig(os.path.join(plot_path, f"pop_dist_{k}.png"), dpi=300)
+    # plot 2050 population distribution on the same picture
+    age_vec = np.arange(base_params.E, base_params.S + base_params.E)
+    fig, ax = plt.subplots()
+    base_pop = base_params.omega[2050 - base_params.start_year, :]
+    plt.plot(age_vec, base_pop, label="Baseline pop.")
+    for k in reform_dict.keys():
+        pop_dist = reform_dict[k]["params"].omega[2050 - base_params.start_year, :]
+        plt.plot(age_vec, pop_dist, label=k + " pop.")
+    plt.xlabel(r"Age $s$")
+    plt.ylabel(r"Pop. dist'n $\omega_{s}$")
+    plt.legend(loc="lower left")
+    fig.savefig(os.path.join(plot_path, "pop_dist_2050.png"), dpi=300)
+
     # TODO: Plot cumulative excess deaths
 
     # Create table of level changes in macro variables

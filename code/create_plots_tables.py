@@ -4,6 +4,7 @@
 # ipmort the necessary libraries
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import os
 from ogcore import parameter_plots as pp
 from ogcore.utils import pct_change_unstationarized
@@ -26,33 +27,85 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     """
 
     # Set constants
-    BASELINE_YEAR_TO_PLOT = 2035
+    BASELINE_YEAR_TO_PLOT = 2040
     TIME_SERIES_PLOT_END_YEAR = 2100
     NUM_YEARS_NPV = 100
     YEAR_RANGE_MIN = 2040
+    N_YEARS = 20
     YEAR_RANGE_MAX = YEAR_RANGE_MIN + 9
 
     # Plot mortality rates in the baseline and reform(s)
     tpi_list = [base_tpi] + [
         reform_dict[k]["tpi_vars"] for k in reform_dict.keys()
     ]
+    param_list = [base_params] + [
+        reform_dict[k]["params"] for k in reform_dict.keys()
+    ]
     labels_list = ["Baseline"] + [k for k in reform_dict.keys()]
+    # Plot mort rates in different scenarios
     fig = pp.plot_mort_rates(
-        tpi_list,
+        param_list,
         labels=labels_list,
         years=[BASELINE_YEAR_TO_PLOT],
         include_title=False,
         path=plot_path,
     )
+    # Plot differences in productivity profiles
+    fig = pp.plot_ability_profiles(
+        base_params,
+        p2=reform_dict["Median Excess Deaths"]["params"],
+        log_scale=True,
+        t=BASELINE_YEAR_TO_PLOT - base_params.start_year,
+        include_title=False,
+        path=plot_path,
+    )
+
+    # Plot population distribution in current period and in 25 years
+    # under different scenarios
+    fig = pp.plot_population(
+        base_params,
+        years_to_plot=[
+            int(base_params.start_year),
+            int(base_params.start_year + 25),
+        ],
+        include_title=False,
+        path=None,
+    )
+    fig.savefig(os.path.join(plot_path, "pop_dist_baseline.png"), dpi=300)
+    for k in reform_dict.keys():
+        fig2 = pp.plot_population(
+            reform_dict[k]["params"],
+            years_to_plot=[
+                int(base_params.start_year),
+                int(base_params.start_year + 25),
+            ],
+            include_title=False,
+            path=None,
+        )
+        fig2.savefig(os.path.join(plot_path, f"pop_dist_{k}.png"), dpi=300)
+    # plot 2050 population distribution on the same picture
+    age_vec = np.arange(base_params.E, base_params.S + base_params.E)
+    fig, ax = plt.subplots()
+    base_pop = base_params.omega[2050 - base_params.start_year, :]
+    plt.plot(age_vec, base_pop, label="Baseline pop.")
+    for k in reform_dict.keys():
+        pop_dist = reform_dict[k]["params"].omega[
+            2050 - base_params.start_year, :
+        ]
+        plt.plot(age_vec, pop_dist, label=k + " pop.")
+    plt.xlabel(r"Age $s$")
+    plt.ylabel(r"Pop. dist'n $\omega_{s}$")
+    plt.legend(loc="lower left")
+    fig.savefig(os.path.join(plot_path, "pop_dist_2050.png"), dpi=300)
+
+    # TODO: Plot cumulative excess deaths
 
     # Create table of level changes in macro variables
-    # Read in CBO long-term forecast  # TODO: find some forecast of South
     # African GDP over a long time period (or extrapolate from some shorter term forecast)
-    forecast = XXXX
     # compute percentage changes in macro variables
     GDP_series = {
-        "Baseline": forecast,
-        "Pct changes": {},
+        "Baseline Forecast": forecast[:NUM_YEARS_NPV],
+        "Pct Changes": {},
         "Levels": {},
         "Diffs": {},
     }
@@ -63,59 +116,54 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
             reform_dict[k]["tpi_vars"],
             reform_dict[k]["params"],
             output_vars=["Y"],
-        )
-        GDP_series["Levels"][k] = GDP_series["Baseline Forecast"] * (
-            1 + GDP_series["Pct Changes"][k]
-        )
+        )["Y"]
+
+        GDP_series["Levels"][k] = GDP_series["Baseline Forecast"][
+            :NUM_YEARS_NPV
+        ] * (1 + GDP_series["Pct Changes"][k][:NUM_YEARS_NPV])
         GDP_series["Diffs"][k] = (
-            GDP_series["Levels"][k] - GDP_series["Baseline Forecast"]
+            GDP_series["Levels"][k][:NUM_YEARS_NPV]
+            - GDP_series["Baseline Forecast"][:NUM_YEARS_NPV]
         )
 
     # Find avg change in GDP from begin_window to end_window
     results_first_N_years = {}
     for k in reform_dict.keys():
         results_first_N_years[k] = (
-            GDP_series["Diffs"][k]
-            .loc[
-                (
-                    GDP_series["Diffs"][k].index
-                    >= (YEAR_RANGE_MIN - reform_dict[k]["params"].start_year)
-                )
-                & (
-                    GDP_series["Diffs"][k].index
-                    <= (YEAR_RANGE_MAX - reform_dict[k]["params"].start_year)
-                )
-            ]
-            .mean()
-        )
-    # TODO: save this table to disk
+            GDP_series["Diffs"][k][:N_YEARS].mean() / 1e12
+        )  # convert to trillions of rand
+    results_df = pd.DataFrame.from_dict(results_first_N_years, orient="index")
+    # rename column
+    results_df.columns = [r"$\Delta$ GDP, Trillions"]
+    results_df.to_latex(
+        buf=os.path.join(plot_path, f"mean_gdp_change_{N_YEARS}years.tex"),
+        float_format="%.2f",
+    )
 
     # Find NPV of levels of GDP over NUM_YEARS_NPV years
-    results_NPV = {}
+    results_NPV = {"Discount Rate": [r"2\%", r"4\%", r"6\%"]}
     npv_dict = {
         "Discount Rate": [0.02, 0.04, 0.06],
         "Discount Rate Label": [r"2\%", r"4\%", r"6\%"],
     }
     for k in reform_dict.keys():
-        results_NPV[k] = {}
+        results_NPV[k] = []
         for r in npv_dict["Discount Rate"]:
-            results_NPV[k][r] = (
+            results_NPV[k].append(
                 (
-                    GDP_series["Diffs"][k].loc[
-                        (GDP_series["Diffs"][k][:NUM_YEARS_NPV])
-                    ]
-                )
-                * (1 + r) ** np.arange(NUM_YEARS_NPV)
-            ).sum()
-    # TODO: save this table to disk: rows are different r, columns are different reform scenarios
-    # # Save table to disk
-    # formatted_table = pd.DataFrame(npv_dict)
-    # formatted_table.reset_index().to_latex(
-    #     buf=os.path.join(plot_path, "Baseline_npv_gdp_table.tex"),
-    #     index=False,
-    #     index_names=False,
-    #     float_format="%.2f",
-    # )
+                    GDP_series["Diffs"][k][:NUM_YEARS_NPV]
+                    / (1 + r) ** np.arange(NUM_YEARS_NPV)
+                ).sum()
+                / 1e12  # convert to trillions of rand
+            )
+    # Save table to disk
+    formatted_table = pd.DataFrame(results_NPV)
+    formatted_table.reset_index().to_latex(
+        buf=os.path.join(plot_path, "npv_gdp_table.tex"),
+        index=False,
+        index_names=False,
+        float_format="%.2f",
+    )
 
     # Time series plots
     # log GDP
@@ -124,13 +172,13 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     years = np.arange(base_params.start_year, TIME_SERIES_PLOT_END_YEAR)
     plt.plot(
         years,
-        np.log(GDP_series["Baseline"][:idx]),
+        np.log(GDP_series["Baseline Forecast"][:idx] / 1e12),
         label="Baseline",
     )
     for k in reform_dict.keys():
         plt.plot(
             years,
-            np.log(GDP_series[k]["Levels"][:idx]),
+            np.log(GDP_series["Levels"][k][:idx] / 1e12),
             label=k,
         )
     plt.legend()
@@ -145,7 +193,7 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     for k in reform_dict.keys():
         plt.plot(
             years,
-            GDP_series[k]["Diffs"][:idx],
+            GDP_series["Diffs"][k][:idx] / 1e12,
             label=k,
         )
     plt.legend()

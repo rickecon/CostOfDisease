@@ -76,7 +76,7 @@ def baseline_pop(p, un_country_code="710"):
         pop_dist=pop_dist[:1, :],
         pre_pop_dist=pre_pop_dist,
         initial_data_year=p.start_year,
-        final_data_year=p.start_year+1,
+        final_data_year=p.start_year + 1,
         GraphDiag=False,
     )
 
@@ -157,7 +157,22 @@ def disease_pop(
     scale_factor = res.x[0]
 
     # TODO: phase in the change in mort rates over 5 years
-    alt_mort_rates = np.minimum(mort_rates * (1 + scale_factor), 1.0)
+    num_years = 5
+    alt_mort_rates = np.zeros((num_years, p.S + p.E))
+    infmort_rates = np.zeros((num_years))
+    for i in range(num_years):
+        alt_mort_rates[i, :] = np.minimum(
+            mort_rates[0, :] * (1 + scale_factor * (i + 1) / num_years), 1.0
+        )
+        infmort_rates[i] = np.minimum(
+            infmort_rates[0] * (1 + scale_factor * (i + 1) / num_years), 1.0
+        )
+
+    # Extend fert_rates, imm_rates to be num_years long
+    fert_rates = np.tile(
+        fert_rates[0, :].reshape(1, p.S + p.E), (num_years, 1)
+    )
+    imm_rates = np.tile(imm_rates[0, :].reshape(1, p.S + p.E), (num_years, 1))
 
     pop_dict = demographics.get_pop_objs(
         p.E,
@@ -174,7 +189,7 @@ def disease_pop(
         pop_dist=pop_dist[:1, :],
         pre_pop_dist=pre_pop_dist,
         initial_data_year=p.start_year,
-        final_data_year=p.start_year + 1,
+        final_data_year=p.start_year + num_years - 1,
         GraphDiag=False,
     )
 

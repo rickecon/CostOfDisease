@@ -9,6 +9,7 @@ import json
 import time
 import copy
 import numpy as np
+import pandas as pd
 from importlib.resources import files
 import matplotlib.pyplot as plt
 from ogcore.parameters import Specifications
@@ -32,7 +33,9 @@ def main():
     CUR_DIR = os.path.dirname(os.path.realpath(__file__))
     save_dir = os.path.join(CUR_DIR, "CostOutput")
     base_dir = os.path.join(save_dir, "BASELINE")
-    reform_dir = os.path.join(save_dir, "REFORM")
+    median_dir = os.path.join(save_dir, "MedianDeaths")
+    low_dir = os.path.join(save_dir, "LowDeaths")
+    high_dir = os.path.join(save_dir, "HighDeaths")
     plot_path = os.path.join(save_dir, "Plots")
     if not os.path.exists(plot_path):
         os.makedirs(plot_path)
@@ -64,19 +67,19 @@ def main():
 
     # Run model
     start_time = time.time()
-    # runner(p, time_path=True, client=client)
+    runner(p, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
 
     """
     ---------------------------------------------------------------------------
-    Run reform policy
+    Simulate with baseline ("median") excess deaths
     ---------------------------------------------------------------------------
     """
 
     # create new Specifications object for reform simulation
     p2 = copy.deepcopy(p)
     p2.baseline = False
-    p2.output_base = reform_dir
+    p2.output_base = median_dir
 
     # Find new population with excess deaths
     new_pop_dict = get_pop_data.disease_pop(
@@ -111,22 +114,102 @@ def main():
         2040: -0.001214,
     }
 
-    def get_adjustment(year):
+    def get_adjustment(prod_dict, year):
         # If year not in the dictionary (i.e. year > 2040), use the last value
-        return productivity_adjustments.get(
+        return prod_dict.get(
             year,
-            productivity_adjustments[max(productivity_adjustments.keys())],
+            prod_dict[max(prod_dict.keys())],
         )
 
     # Iterate over each simulation year assuming simulation starts at 2025
     for t in range(p2.e.shape[0]):
         current_year = p2.start_year + t  # e.g. 2025, 2026, ...
-        adjustment = get_adjustment(current_year)
+        adjustment = get_adjustment(productivity_adjustments, current_year)
         p2.e[t, :, :3] = p.e[t, :, :3] * (1 + adjustment)
 
     # Run model
     start_time = time.time()
-    # runner(p2, time_path=True, client=client)
+    runner(p2, time_path=True, client=client)
+    print("run time = ", time.time() - start_time)
+    client.close()
+
+    """
+    ---------------------------------------------------------------------------
+    Simulate "low" scenario, with 50% of the median excess deaths (and 50% of productivity losses)
+    ---------------------------------------------------------------------------
+    """
+    # create new Specifications object for reform simulation
+    p3 = copy.deepcopy(p)
+    p3.baseline = False
+    p3.output_base = low_dir
+
+    # Find new population with excess deaths
+    new_pop_dict = get_pop_data.disease_pop(
+        p3,
+        fert_rates,
+        mort_rates,
+        infmort_rates,
+        imm_rates,
+        UN_COUNTRY_CODE,
+        excess_deaths=202_693 * 0.5,
+    )
+    p3.update_specifications(new_pop_dict)
+
+    # Apply productivity losses for the bottom 70% of the population
+    # these are a linear interpolation of the four scenario values
+    prod_low = {}
+    for year, value in productivity_adjustments.items():
+        prod_low[year] = value * 0.5
+
+    # Iterate over each simulation year assuming simulation starts at 2025
+    for t in range(p3.e.shape[0]):
+        current_year = p3.start_year + t  # e.g. 2025, 2026, ...
+        adjustment = get_adjustment(prod_low, current_year)
+        p3.e[t, :, :3] = p.e[t, :, :3] * (1 + adjustment)
+
+    # Run model
+    start_time = time.time()
+    runner(p3, time_path=True, client=client)
+    print("run time = ", time.time() - start_time)
+    client.close()
+
+    """
+    ---------------------------------------------------------------------------
+    Simulate "high" scenario, with 150% of the median excess deaths (and 150% of productivity losses)
+    ---------------------------------------------------------------------------
+    """
+    # create new Specifications object for reform simulation
+    p4 = copy.deepcopy(p)
+    p4.baseline = False
+    p4.output_base = high_dir
+
+    # Find new population with excess deaths
+    new_pop_dict = get_pop_data.disease_pop(
+        p4,
+        fert_rates,
+        mort_rates,
+        infmort_rates,
+        imm_rates,
+        UN_COUNTRY_CODE,
+        excess_deaths=202_693 * 1.5,
+    )
+    p4.update_specifications(new_pop_dict)
+
+    # Apply productivity losses for the bottom 70% of the population
+    # these are a linear interpolation of the four scenario values
+    prod_high = {}
+    for year, value in productivity_adjustments.items():
+        prod_high[year] = value * 1.5
+
+    # Iterate over each simulation year assuming simulation starts at 2025
+    for t in range(p4.e.shape[0]):
+        current_year = p4.start_year + t  # e.g. 2025, 2026, ...
+        adjustment = get_adjustment(prod_low, current_year)
+        p4.e[t, :, :3] = p.e[t, :, :3] * (1 + adjustment)
+
+    # Run model
+    start_time = time.time()
+    runner(p4, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
     client.close()
 
@@ -137,24 +220,43 @@ def main():
     """
     base_tpi = safe_read_pickle(os.path.join(base_dir, "TPI", "TPI_vars.pkl"))
     base_params = safe_read_pickle(os.path.join(base_dir, "model_params.pkl"))
-    reform_tpi = safe_read_pickle(
-        os.path.join(reform_dir, "TPI", "TPI_vars.pkl")
-    )
-    reform_params = safe_read_pickle(
-        os.path.join(reform_dir, "model_params.pkl")
-    )
+
     # put reform(s) in dict
     # If do other sims (e.g, with high and low forecasts of excess deaths), they
     # can be added to this dictionary
     reform_dict = {
+        "Low Excess Deaths": {
+            "tpi_vars": safe_read_pickle(
+                os.path.join(low_dir, "TPI", "TPI_vars.pkl")
+            ),
+            "params": safe_read_pickle(
+                os.path.join(low_dir, "model_params.pkl")
+            ),
+        },
         "Median Excess Deaths": {
-            "tpi_vars": reform_tpi,
-            "params": reform_params,
-        }
+            "tpi_vars": safe_read_pickle(
+                os.path.join(median_dir, "TPI", "TPI_vars.pkl")
+            ),
+            "params": safe_read_pickle(
+                os.path.join(median_dir, "model_params.pkl")
+            ),
+        },
+        "High Excess Deaths": {
+            "tpi_vars": safe_read_pickle(
+                os.path.join(high_dir, "TPI", "TPI_vars.pkl")
+            ),
+            "params": safe_read_pickle(
+                os.path.join(high_dir, "model_params.pkl")
+            ),
+        },
     }
 
     # Create tables and plots
-    forecast = np.ones(150) * 100
+    # read in real GDP forecast
+    forecast_df = pd.read_csv(os.path.join(CUR_DIR, "real_gdp_forecast.csv"))
+    forecast = forecast_df[forecast_df.year >= base_params.start_year][
+        "real_gdp"
+    ].values
     create_plots_tables.plots(
         base_tpi, base_params, reform_dict, forecast, plot_path
     )

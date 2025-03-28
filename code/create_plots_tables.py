@@ -132,7 +132,7 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
         results_first_N_years[k] = (
             GDP_series["Diffs"][k][:N_YEARS].mean() / 1e12
         )  # convert to trillions of rand
-    results_df = pd.DataFrame(results_first_N_years, index=reform_dict.keys())
+    results_df = pd.DataFrame.from_dict(results_first_N_years, orient="index")
     # rename column
     results_df.columns = [r"$\Delta$ GDP, Trillions"]
     results_df.to_latex(
@@ -172,13 +172,13 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     years = np.arange(base_params.start_year, TIME_SERIES_PLOT_END_YEAR)
     plt.plot(
         years,
-        np.log(GDP_series["Baseline Forecast"][:idx]),
+        np.log(GDP_series["Baseline Forecast"][:idx] / 1e12),
         label="Baseline",
     )
     for k in reform_dict.keys():
         plt.plot(
             years,
-            np.log(GDP_series["Levels"][k][:idx]),
+            np.log(GDP_series["Levels"][k][:idx] / 1e12),
             label=k,
         )
     plt.legend()
@@ -193,7 +193,7 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     for k in reform_dict.keys():
         plt.plot(
             years,
-            GDP_series["Diffs"][k][:idx],
+            GDP_series["Diffs"][k][:idx] / 1e12,
             label=k,
         )
     plt.legend()

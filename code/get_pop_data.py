@@ -169,7 +169,9 @@ def disease_pop(
         )
 
     # Extend fert_rates, imm_rates to be num_years long
-    fert_rates = np.tile(fert_rates[0, :].reshape(1, p.S + p.E), (num_years, 1))
+    fert_rates = np.tile(
+        fert_rates[0, :].reshape(1, p.S + p.E), (num_years, 1)
+    )
     imm_rates = np.tile(imm_rates[0, :].reshape(1, p.S + p.E), (num_years, 1))
 
     pop_dict = demographics.get_pop_objs(

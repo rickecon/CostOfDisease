@@ -57,10 +57,10 @@ def main():
     p.update_specifications(defaults)
 
     # get baseline population data (rather than use what is in JSON)
-    # pop_dict, fert_rates, mort_rates, infmort_rates, imm_rates = (
-    #     get_pop_data.baseline_pop(p)
-    # )
-    # p.update_specifications(pop_dict)
+    pop_dict, fert_rates, mort_rates, infmort_rates, imm_rates = (
+        get_pop_data.baseline_pop(p)
+    )
+    p.update_specifications(pop_dict)
 
     # Run model
     start_time = time.time()
@@ -79,16 +79,16 @@ def main():
     p2.output_base = reform_dir
 
     # Find new population with excess deaths
-    # new_pop_dict = get_pop_data.disease_pop(
-    #     p2,
-    #     fert_rates,
-    #     mort_rates,
-    #     infmort_rates,
-    #     imm_rates,
-    #     UN_COUNTRY_CODE,
-    #     excess_deaths=202_693,
-    # )
-    # p2.update_specifications(new_pop_dict)
+    new_pop_dict = get_pop_data.disease_pop(
+        p2,
+        fert_rates,
+        mort_rates,
+        infmort_rates,
+        imm_rates,
+        UN_COUNTRY_CODE,
+        excess_deaths=202_693,
+    )
+    p2.update_specifications(new_pop_dict)
 
     # Apply productivity losses for the bottom 70% of the population
     # these are a linear interpolation of the four scenario values

@@ -4,6 +4,7 @@
 # ipmort the necessary libraries
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import os
 from ogcore import parameter_plots as pp
 from ogcore.utils import pct_change_unstationarized
@@ -70,11 +71,10 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
             include_title=False,
             path=None,
         )
-        fig.savefig(os.path.join(plot_path, "pop_dist_{k}.png"), dpi=300)
+        fig.savefig(os.path.join(plot_path, f"pop_dist_{k}.png"), dpi=300)
     # TODO: Plot cumulative excess deaths
 
     # Create table of level changes in macro variables
-    # Read in CBO long-term forecast  # TODO: find some forecast of South
     # African GDP over a long time period (or extrapolate from some shorter term forecast)
     # compute percentage changes in macro variables
     GDP_series = {
@@ -107,30 +107,36 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
             - reform_dict[k]["params"].start_year : YEAR_RANGE_MIN
             - reform_dict[k]["params"].start_year
         ].mean()
-    # TODO: save this table to disk
+    results_df = pd.DataFrame(results_first_N_years, index=reform_dict.keys())
+    results_df.to_latex(
+        buf=os.path.join(plot_path, f"mean_gdp_change_{YEAR_RANGE_MIN}.tex"),
+        index=False,
+        index_names=False,
+        float_format="%.2f"
+        )
 
     # Find NPV of levels of GDP over NUM_YEARS_NPV years
-    results_NPV = {}
+    results_NPV = {"Discount Rate": [r"2\%", r"4\%", r"6\%"]}
     npv_dict = {
         "Discount Rate": [0.02, 0.04, 0.06],
         "Discount Rate Label": [r"2\%", r"4\%", r"6\%"],
+
     }
     for k in reform_dict.keys():
-        results_NPV[k] = {}
+        results_NPV[k] = []
         for r in npv_dict["Discount Rate"]:
-            results_NPV[k][r] = (
+            results_NPV[k].append(
                 GDP_series["Diffs"][k][:NUM_YEARS_NPV]
                 * (1 + r) ** np.arange(NUM_YEARS_NPV)
             ).sum()
-    # TODO: save this table to disk: rows are different r, columns are different reform scenarios
-    # # Save table to disk
-    # formatted_table = pd.DataFrame(npv_dict)
-    # formatted_table.reset_index().to_latex(
-    #     buf=os.path.join(plot_path, "Baseline_npv_gdp_table.tex"),
-    #     index=False,
-    #     index_names=False,
-    #     float_format="%.2f",
-    # )
+    # Save table to disk
+    formatted_table = pd.DataFrame(npv_dict)
+    formatted_table.reset_index().to_latex(
+        buf=os.path.join(plot_path, "npv_gdp_table.tex"),
+        index=False,
+        index_names=False,
+        float_format="%.2f",
+    )
 
     # Time series plots
     # log GDP

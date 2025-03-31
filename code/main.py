@@ -36,6 +36,8 @@ def main():
     median_dir = os.path.join(save_dir, "MedianDeaths")
     low_dir = os.path.join(save_dir, "LowDeaths")
     high_dir = os.path.join(save_dir, "HighDeaths")
+    aim_dir = os.path.join(save_dir, "AIMDeaths")
+
     plot_path = os.path.join(save_dir, "Plots")
     if not os.path.exists(plot_path):
         os.makedirs(plot_path)
@@ -89,11 +91,7 @@ def main():
         infmort_rates,
         imm_rates,
         UN_COUNTRY_CODE,
-        # excess_deaths=202_693,
-        # excess_deaths=228_881,  # Annals of Internal Medicine Base Case, complete cutback (PEPFAR = 0%) = 2_186_000 over 10 years + CGD estimates for the other diseases
-        # 10,481
-        excess_deaths=301_581,  # Annals of Internal Medicine Susceptible scenario, complete cutback (PEPFAR = 0%) = 2_911_000 over 10 years + CGD estimates for the other diseases
-        # 10,481
+        excess_deaths=202_693,
     )
     p2.update_specifications(new_pop_dict)
 
@@ -136,17 +134,11 @@ def main():
     )
     p3.update_specifications(new_pop_dict)
 
-    # Apply productivity losses for the bottom 70% of the population
-    # these are a linear interpolation of the four scenario values
-    prod_low = {}
-    for year, value in productivity_adjustments.items():
-        prod_low[year] = value * 0.5
+    # Low productivity adjustment scenario
+    low_prod = total_adjustment * 0.5
 
-    # Iterate over each simulation year assuming simulation starts at 2025
-    for t in range(p3.e.shape[0]):
-        current_year = p3.start_year + t  # e.g. 2025, 2026, ...
-        adjustment = get_adjustment(prod_low, current_year)
-        p3.e[t, :, :3] = p.e[t, :, :3] * (1 + adjustment)
+    # Update the disutility of labor matrix for the entire population
+    p3.chi_n = p3.chi_n * (1 + low_prod)
 
     # Run model
     start_time = time.time()
@@ -175,21 +167,53 @@ def main():
     )
     p4.update_specifications(new_pop_dict)
 
-    # Apply productivity losses for the bottom 70% of the population
-    # these are a linear interpolation of the four scenario values
-    prod_high = {}
-    for year, value in productivity_adjustments.items():
-        prod_high[year] = value * 1.5
+    # High productivity adjustment scenario
+    high_prod = total_adjustment * 1.5
 
-    # Iterate over each simulation year assuming simulation starts at 2025
-    for t in range(p4.e.shape[0]):
-        current_year = p4.start_year + t  # e.g. 2025, 2026, ...
-        adjustment = get_adjustment(prod_low, current_year)
-        p4.e[t, :, :3] = p.e[t, :, :3] * (1 + adjustment)
+    # Update the disutility of labor matrix for the entire population
+    p4.chi_n = p4.chi_n * (1 + high_prod)
 
     # Run model
     start_time = time.time()
     # runner(p4, time_path=True, client=client)
+    print("run time = ", time.time() - start_time)
+
+    """
+    ---------------------------------------------------------------------------
+    Simulate "AIM-high" scenario (and 150% of productivity losses)
+    Estimated deaths from Annals of Internal Medicine (AIM) Susceptible scenario, 
+    complete cutback (PEPFAR = 0%) = 2_911_000 over 10 years + CGD estimates for the other diseases
+    ---------------------------------------------------------------------------
+    """
+    # create new Specifications object for reform simulation
+    p5 = copy.deepcopy(p)
+    p5.baseline = False
+    p5.output_base = aim_dir
+
+    # Find new population with excess deaths
+    new_pop_dict = get_pop_data.disease_pop(
+        p5,
+        fert_rates,
+        mort_rates,
+        infmort_rates,
+        imm_rates,
+        UN_COUNTRY_CODE,
+        # excess_deaths=246_981,  # AIM Susceptible scenario, partial cutback (PEPFAR = 50%) = 2_365_000 over 10 years + CGD estimates for the other diseases
+        # 10_481
+        excess_deaths=301_581,  # AIM Susceptible scenario, complete cutback (PEPFAR = 0%) = 2_911_000 over 10 years + CGD estimates for the other diseases
+        # 10_481
+    )
+    p5.update_specifications(new_pop_dict)
+
+    # High productivity adjustment scenario
+    high_prod = total_adjustment * 1.5
+
+    # Update the disutility of labor matrix for the entire population
+    p5.chi_n = p5.chi_n * (1 + high_prod)
+
+    # Run model
+    start_time = time.time()
+    # runner(p5, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
     client.close()
 
@@ -227,6 +251,14 @@ def main():
             ),
             "params": safe_read_pickle(
                 os.path.join(high_dir, "model_params.pkl")
+            ),
+        },
+        "High Excess Deaths": {
+            "tpi_vars": safe_read_pickle(
+                os.path.join(aim_dir, "TPI", "TPI_vars.pkl")
+            ),
+            "params": safe_read_pickle(
+                os.path.join(aim_dir, "model_params.pkl")
             ),
         },
     }

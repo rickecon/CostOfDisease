@@ -253,7 +253,7 @@ def main():
                 os.path.join(high_dir, "model_params.pkl")
             ),
         },
-        "High Excess Deaths": {
+        "AIM Excess Deaths": {
             "tpi_vars": safe_read_pickle(
                 os.path.join(aim_dir, "TPI", "TPI_vars.pkl")
             ),

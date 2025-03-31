@@ -89,43 +89,25 @@ def main():
         infmort_rates,
         imm_rates,
         UN_COUNTRY_CODE,
-        excess_deaths=202_693,
+        # excess_deaths=202_693,
+        # excess_deaths=228_881,  # Annals of Internal Medicine Base Case, complete cutback (PEPFAR = 0%) = 2_186_000 over 10 years + CGD estimates for the other diseases
+        # 10,481
+        excess_deaths=301_581,  # Annals of Internal Medicine Susceptible scenario, complete cutback (PEPFAR = 0%) = 2_911_000 over 10 years + CGD estimates for the other diseases
+        # 10,481
     )
     p2.update_specifications(new_pop_dict)
 
-    # Apply productivity losses for the bottom 70% of the population
-    # these are a linear interpolation of the four scenario values
-    productivity_adjustments = {
-        2025: -0.000018,
-        2026: -0.00007,
-        2027: -0.000122,
-        2028: -0.000174,
-        2029: -0.000226,
-        2030: -0.000278,
-        2031: -0.000401,
-        2032: -0.000524,
-        2033: -0.000647,
-        2034: -0.00077,
-        2035: -0.000893,
-        2036: -0.000957,
-        2037: -0.001021,
-        2038: -0.001085,
-        2039: -0.00115,
-        2040: -0.001214,
-    }
+    # Apply productivity losses for the hiv and tb effects
+    # These are not time or income group specific. One time permanent effect
+    # Define the adjustment factors
+    hiv_adjustment = 0.00190705  # HIV-driven adjustment (as a percentage)
+    tb_adjustment = 0.00027581  # Tuberculosis adjustment (as a percentage)
 
-    def get_adjustment(prod_dict, year):
-        # If year not in the dictionary (i.e. year > 2040), use the last value
-        return prod_dict.get(
-            year,
-            prod_dict[max(prod_dict.keys())],
-        )
+    # Compute the total adjustment factor (percentage increase)
+    total_adjustment = hiv_adjustment + tb_adjustment  # ≈ 0.00218286
 
-    # Iterate over each simulation year assuming simulation starts at 2025
-    for t in range(p2.e.shape[0]):
-        current_year = p2.start_year + t  # e.g. 2025, 2026, ...
-        adjustment = get_adjustment(productivity_adjustments, current_year)
-        p2.e[t, :, :3] = p.e[t, :, :3] * (1 + adjustment)
+    # Update the disutility of labor matrix for the entire population
+    p2.chi_n = p2.chi_n * (1 + total_adjustment)
 
     # Run model
     start_time = time.time()

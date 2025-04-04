@@ -103,8 +103,9 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     # Create table of level changes in macro variables
     # African GDP over a long time period (or extrapolate from some shorter term forecast)
     # compute percentage changes in macro variables
+    inflation_adjust = (313.698 * 1.025) / 237.002  # to put the 2015$ into 2025$
     GDP_series = {
-        "Baseline Forecast": forecast[:NUM_YEARS_NPV],
+        "Baseline Forecast": forecast[:NUM_YEARS_NPV] * inflation_adjust,
         "Pct Changes": {},
         "Levels": {},
         "Diffs": {},
@@ -130,11 +131,11 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     results_first_N_years = {}
     for k in reform_dict.keys():
         results_first_N_years[k] = (
-            GDP_series["Diffs"][k][:N_YEARS].mean() / 1e12
-        )  # convert to trillions of rand
+            GDP_series["Diffs"][k][:N_YEARS].mean() / 1e9
+        )  # convert to billions of dollars
     results_df = pd.DataFrame.from_dict(results_first_N_years, orient="index")
     # rename column
-    results_df.columns = [r"$\Delta$ GDP, Trillions"]
+    results_df.columns = [r"$\Delta$ GDP, Billions $"]
     results_df.to_latex(
         buf=os.path.join(plot_path, f"mean_gdp_change_{N_YEARS}years.tex"),
         float_format="%.2f",
@@ -154,7 +155,7 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
                     GDP_series["Diffs"][k][:NUM_YEARS_NPV]
                     / (1 + r) ** np.arange(NUM_YEARS_NPV)
                 ).sum()
-                / 1e12  # convert to trillions of rand
+                / 1e9  # convert to billions of dollars
             )
     # Save table to disk
     formatted_table = pd.DataFrame(results_NPV)
@@ -172,18 +173,18 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     years = np.arange(base_params.start_year, TIME_SERIES_PLOT_END_YEAR)
     plt.plot(
         years,
-        np.log(GDP_series["Baseline Forecast"][:idx] / 1e12),
+        np.log(GDP_series["Baseline Forecast"][:idx] / 1e9),
         label="Baseline",
     )
     for k in reform_dict.keys():
         plt.plot(
             years,
-            np.log(GDP_series["Levels"][k][:idx] / 1e12),
+            np.log(GDP_series["Levels"][k][:idx] / 1e9),
             label=k,
         )
     plt.legend()
     plt.xlabel("Year")
-    plt.ylabel("GDP, ln(Trillions of Rand)")
+    plt.ylabel("GDP, ln(Billions 2025$)")
     plt.savefig(os.path.join(plot_path, "log_GDP_paths.png"), dpi=300)
 
     # Differences in GDP
@@ -193,10 +194,10 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     for k in reform_dict.keys():
         plt.plot(
             years,
-            GDP_series["Diffs"][k][:idx] / 1e12,
+            GDP_series["Diffs"][k][:idx] / 1e9,
             label=k,
         )
     plt.legend()
     plt.xlabel("Year")
-    plt.ylabel("Change in GDP (Trillions of Rand)")
+    plt.ylabel("Change in GDP (Billions of 2025$)")
     plt.savefig(os.path.join(plot_path, "GDP_diff_path.png"), dpi=300)

@@ -98,11 +98,10 @@ def main():
     # Apply productivity losses for the hiv and tb effects
     # These are not time or income group specific. One time permanent effect
     # Define the adjustment factors
-    hiv_adjustment = 0.00190705  # HIV-driven adjustment (as a percentage)
+    hiv_adjustment = 0.0036062  # HIV-driven adjustment (as a percentage)
     tb_adjustment = 0.00027581  # Tuberculosis adjustment (as a percentage)
 
-    # Compute the total adjustment factor (percentage increase)
-    total_adjustment = hiv_adjustment + tb_adjustment  # ≈ 0.00218286
+    total_adjustment = hiv_adjustment + tb_adjustment  # ≈ 0.003882
 
     # Update the disutility of labor matrix for the entire population
     p2.chi_n = p2.chi_n * (1 + total_adjustment)
@@ -182,7 +181,7 @@ def main():
     ---------------------------------------------------------------------------
     Simulate "AIM-high" scenario (and 150% of productivity losses)
     Estimated deaths from Annals of Internal Medicine (AIM) Susceptible scenario, 
-    complete cutback (PEPFAR = 0%) = 2_911_000 over 10 years + CGD estimates for the other diseases
+    complete cutback (PEPFAR = 0%) = 1_326_\_000 over 10 years + CGD estimates for the other diseases
     ---------------------------------------------------------------------------
     """
     # create new Specifications object for reform simulation
@@ -198,9 +197,7 @@ def main():
         infmort_rates,
         imm_rates,
         UN_COUNTRY_CODE,
-        # excess_deaths=246_981,  # AIM Susceptible scenario, partial cutback (PEPFAR = 50%) = 2_365_000 over 10 years + CGD estimates for the other diseases
-        # 10_481
-        excess_deaths=301_581,  # AIM Susceptible scenario, complete cutback (PEPFAR = 0%) = 2_911_000 over 10 years + CGD estimates for the other diseases
+        excess_deaths=133_081,  # AIM Susceptible scenario, complete cutback (PEPFAR = 0%) = 1_326_000 excess deaths over 10 years + CGD estimates for the other diseases
         # 10_481
     )
     p5.update_specifications(new_pop_dict)

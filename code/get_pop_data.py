@@ -3,7 +3,10 @@ import numpy as np
 from scipy.optimize import minimize
 from ogcore import demographics
 from ogcore.parameters import Specifications
+import os
 
+CUR_DIR = os.path.dirname(os.path.realpath(__file__))
+DEMOG_PATH = os.path.join(CUR_DIR, "demographic_data")
 
 def baseline_pop(p, un_country_code="710"):
     """
@@ -28,6 +31,7 @@ def baseline_pop(p, un_country_code="710"):
         country_id=un_country_code,
         start_year=p.start_year,
         end_year=p.start_year + 1,
+        download_path=DEMOG_PATH,
     )
     fert_rates = demographics.get_fert(
         p.E + p.S,
@@ -37,6 +41,7 @@ def baseline_pop(p, un_country_code="710"):
         start_year=p.start_year,
         end_year=p.start_year + 1,
         graph=False,
+        download_path=DEMOG_PATH,
     )
     mort_rates, infmort_rates = demographics.get_mort(
         p.E + p.S,
@@ -46,6 +51,7 @@ def baseline_pop(p, un_country_code="710"):
         start_year=p.start_year,
         end_year=p.start_year + 1,
         graph=False,
+        download_path=DEMOG_PATH,
     )
     imm_rates = demographics.get_imm_rates(
         p.E + p.S,
@@ -59,6 +65,7 @@ def baseline_pop(p, un_country_code="710"):
         start_year=p.start_year,
         end_year=p.start_year + 1,
         graph=False,
+        download_path=DEMOG_PATH,
     )
 
     pop_dict = demographics.get_pop_objs(
@@ -78,6 +85,7 @@ def baseline_pop(p, un_country_code="710"):
         initial_data_year=p.start_year,
         final_data_year=p.start_year + 1,
         GraphDiag=False,
+        download_path=DEMOG_PATH,
     )
 
     return pop_dict, fert_rates, mort_rates, infmort_rates, imm_rates

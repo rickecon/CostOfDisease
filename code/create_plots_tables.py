@@ -6,7 +6,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import os
+import matplotlib.ticker as mticker
 from ogcore import parameter_plots as pp
+from ogcore import output_plots as op
 from ogcore.utils import pct_change_unstationarized
 
 # Use a custom matplotlib style file for plots
@@ -43,13 +45,44 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     ]
     labels_list = ["Baseline"] + [k for k in reform_dict.keys()]
     # Plot mort rates in different scenarios
-    fig = pp.plot_mort_rates(
-        param_list,
-        labels=labels_list,
-        years=[BASELINE_YEAR_TO_PLOT],
-        include_title=False,
-        path=plot_path,
-    )
+    years = [BASELINE_YEAR_TO_PLOT]
+    p0 = param_list[0]
+    age_per = np.linspace(p0.E, p0.E + p0.S, p0.S)
+    fig, ax = plt.subplots()
+    for y in years:
+        t = y - p0.start_year
+        for i, p in enumerate(param_list):
+            plt.plot(age_per[:-1], p.rho[t, :-1], label=labels_list[i] + " " + str(y))
+    plt.xlabel(r"Age $s$ (model periods)")
+    plt.ylabel(r"Mortality Rates $\rho_{s}$")
+    plt.legend(loc="upper left")
+    ticks_loc = ax.get_yticks().tolist()
+    ax.yaxis.set_major_locator(mticker.FixedLocator(ticks_loc))
+    ax.set_yticklabels(["{:,.0%}".format(x) for x in ticks_loc])
+    fig_path = os.path.join(plot_path, "mortality_rates")
+    plt.savefig(fig_path, dpi=300)
+
+    # plot survival rates
+    p0 = param_list[0]
+    age_per = np.linspace(p0.E, p0.E + p0.S, p0.S)
+    fig, ax = plt.subplots()
+    for y in years:
+        t = y - p0.start_year
+        for i, p in enumerate(param_list):
+            plt.plot(
+                age_per,
+                np.cumprod(1 - p.rho[t, :]),
+                label=labels_list[i] + " " + str(y),
+            )
+    plt.xlabel(r"Age $s$ (model periods)")
+    plt.ylabel(r"Cumulative Survival Rates")
+    plt.legend(loc="lower left")
+    ticks_loc = ax.get_yticks().tolist()
+    ax.yaxis.set_major_locator(mticker.FixedLocator(ticks_loc))
+    ax.set_yticklabels(["{:,.0%}".format(x) for x in ticks_loc])
+    fig_path = os.path.join(plot_path, "survival_rates")
+    plt.savefig(fig_path, dpi=300)
+
     # Plot differences in productivity profiles
     fig = pp.plot_ability_profiles(
         base_params,
@@ -58,6 +91,29 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
         t=BASELINE_YEAR_TO_PLOT - base_params.start_year,
         include_title=False,
         path=plot_path,
+    )
+
+    # Plot differences in chi_n profiles
+    fig = pp.plot_chi_n(
+        param_list,
+        labels=labels_list,
+        years_to_plot=[BASELINE_YEAR_TO_PLOT],
+        include_title=False,
+        path=plot_path,
+    )
+
+    # Plot differences in labor supply profiles
+    fig = op.tpi_profiles(
+        base_tpi,
+        base_params,
+        reform_dict["Median Excess Deaths"]["tpi_vars"],
+        reform_dict["Median Excess Deaths"]["params"],
+        by_j=False,
+        var="n",
+        num_years=5,
+        start_year=BASELINE_YEAR_TO_PLOT,
+        plot_title="Labor Supply by Age",
+        path=os.path.join(plot_path, "labor_supply.png"),
     )
 
     # Plot population distribution in current period and in 25 years
@@ -142,10 +198,10 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     )
 
     # Find NPV of levels of GDP over NUM_YEARS_NPV years
-    results_NPV = {"Discount Rate": [r"2\%", r"4\%", r"6\%"]}
+    results_NPV = {"Discount Rate": [r"1\%", r"2\%", r"3\%", r"4\%", r"6\%"]}
     npv_dict = {
-        "Discount Rate": [0.02, 0.04, 0.06],
-        "Discount Rate Label": [r"2\%", r"4\%", r"6\%"],
+        "Discount Rate": [0.01, 0.02, 0.03, 0.04, 0.06],
+        "Discount Rate Label": [r"1\%", r"2\%", r"3\%", r"4\%", r"6\%"],
     }
     for k in reform_dict.keys():
         results_NPV[k] = []

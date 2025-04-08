@@ -62,9 +62,15 @@ def main():
     p.update_specifications(defaults)
 
     # get baseline population data (rather than use what is in JSON)
-    pop_dict, fert_rates, mort_rates, infmort_rates, imm_rates = (
-        get_pop_data.baseline_pop(p)
-    )
+    (
+        pop_dict,
+        pop_dist,
+        pre_pop_dist,
+        fert_rates,
+        mort_rates,
+        infmort_rates,
+        imm_rates,
+    ) = get_pop_data.baseline_pop(p)
     p.update_specifications(pop_dict)
 
     # Run model
@@ -86,6 +92,8 @@ def main():
     # Find new population with excess deaths
     new_pop_dict = get_pop_data.disease_pop(
         p2,
+        pop_dist,
+        pre_pop_dist,
         fert_rates,
         mort_rates,
         infmort_rates,
@@ -124,6 +132,8 @@ def main():
     # Find new population with excess deaths
     new_pop_dict = get_pop_data.disease_pop(
         p3,
+        pop_dist,
+        pre_pop_dist,
         fert_rates,
         mort_rates,
         infmort_rates,
@@ -157,6 +167,8 @@ def main():
     # Find new population with excess deaths
     new_pop_dict = get_pop_data.disease_pop(
         p4,
+        pop_dist,
+        pre_pop_dist,
         fert_rates,
         mort_rates,
         infmort_rates,
@@ -180,8 +192,8 @@ def main():
     """
     ---------------------------------------------------------------------------
     Simulate "AIM-high" scenario (and 150% of productivity losses)
-    Estimated deaths from Annals of Internal Medicine (AIM) Susceptible scenario, 
-    complete cutback (PEPFAR = 0%) = 1_326_\_000 over 10 years + CGD estimates for the other diseases
+    Estimated deaths from Annals of Internal Medicine (AIM) Susceptible scenario,
+    complete cutback (PEPFAR = 0%) = 1_326_000 over 10 years + CGD estimates for the other diseases
     ---------------------------------------------------------------------------
     """
     # create new Specifications object for reform simulation
@@ -192,6 +204,8 @@ def main():
     # Find new population with excess deaths
     new_pop_dict = get_pop_data.disease_pop(
         p5,
+        pop_dist,
+        pre_pop_dist,
         fert_rates,
         mort_rates,
         infmort_rates,

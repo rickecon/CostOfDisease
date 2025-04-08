@@ -15,13 +15,16 @@ from ogcore.utils import pct_change_unstationarized
 plt.style.use("ogcore.OGcorePlots")
 
 
-def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
+def plots(
+    base_tpi, base_params, baseline_deaths, reform_dict, forecast, plot_path
+):
     """
     Create plots and tables for the cost of disease
 
     Args:
         base_tpi (dict): baseline TPI output
         base_params (Specifications): baseline parameters
+        baseline_deaths (NumPy array): number deaths by year and age in the basline
         reform_dict (dict): dictionary of reform results
         forecast (pd.DataFrame): forecast of macro variables
         plot_path (str): path to save plots

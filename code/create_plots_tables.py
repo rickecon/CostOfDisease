@@ -52,7 +52,11 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     for y in years:
         t = y - p0.start_year
         for i, p in enumerate(param_list):
-            plt.plot(age_per[:-1], p.rho[t, :-1], label=labels_list[i] + " " + str(y))
+            plt.plot(
+                age_per[:-1],
+                p.rho[t, :-1],
+                label=labels_list[i] + " " + str(y),
+            )
     plt.xlabel(r"Age $s$ (model periods)")
     plt.ylabel(r"Mortality Rates $\rho_{s}$")
     plt.legend(loc="upper left")
@@ -159,7 +163,9 @@ def plots(base_tpi, base_params, reform_dict, forecast, plot_path):
     # Create table of level changes in macro variables
     # African GDP over a long time period (or extrapolate from some shorter term forecast)
     # compute percentage changes in macro variables
-    inflation_adjust = (313.698 * 1.025) / 237.002  # to put the 2015$ into 2025$
+    inflation_adjust = (
+        313.698 * 1.025
+    ) / 237.002  # to put the 2015$ into 2025$
     GDP_series = {
         "Baseline Forecast": forecast[:NUM_YEARS_NPV] * inflation_adjust,
         "Pct Changes": {},

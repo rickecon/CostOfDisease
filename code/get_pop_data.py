@@ -8,6 +8,7 @@ import os
 CUR_DIR = os.path.dirname(os.path.realpath(__file__))
 DEMOG_PATH = os.path.join(CUR_DIR, "demographic_data")
 
+
 def baseline_pop(p, un_country_code="710"):
     """
     Returns objects for the baseline population

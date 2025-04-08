@@ -94,6 +94,15 @@ def baseline_pop(p, un_country_code="710", download=False):
             os.path.join(DEMOG_PATH, "immigration_rates.csv"), delimiter=","
         )
 
+    deaths = total_deaths(
+        pop_dist,
+        fert_rates,
+        mort_rates,
+        infmort_rates,
+        imm_rates,
+        num_years=200,
+    )
+
     pop_dict = demographics.get_pop_objs(
         p.E,
         p.S,
@@ -121,6 +130,7 @@ def baseline_pop(p, un_country_code="710", download=False):
         mort_rates,
         infmort_rates,
         imm_rates,
+        deaths,
     )
 
 
@@ -208,6 +218,15 @@ def disease_pop(
     )
     imm_rates = np.tile(imm_rates[0, :].reshape(1, p.S + p.E), (num_years, 1))
 
+    deaths = total_deaths(
+        pop_dist,
+        fert_rates,
+        alt_mort_rates,
+        infmort_rates,
+        imm_rates,
+        num_years=200,
+    )
+
     pop_dict = demographics.get_pop_objs(
         p.E,
         p.S,
@@ -227,4 +246,50 @@ def disease_pop(
         GraphDiag=False,
     )
 
-    return pop_dict
+    return pop_dict, deaths
+
+
+def total_deaths(
+    pop_dist, fert_rates, mort_rates, infmort_rates, imm_rates, num_years=200
+):
+    """
+    This function computes total deaths each year for num_years.
+
+    Args:
+        pop_dist (NumPy array): number of people of each age
+        fert_rates (NumPy array): fertility rates at each age
+        mort_rates (NumPy array): mortality rates at each age
+        infmort_rates (NumPy array): infant mortality rates by year
+        imm_rates (NumPy array): immigration rates at each age
+        num_years (int): number of years for death forecast
+
+    Returns
+        deaths fert_rates (NumPy array): number deaths for each year and age
+    """
+    # start by looping over years in population objects
+    initial_years = mort_rates.shape[0]
+    # initialize death array
+    deaths = np.zeros((num_years, mort_rates.shape[1]))
+    # Loop over years in pop data passed in
+    pop_t = pop_dist[0, :]
+    for y in range(initial_years):
+        deaths[y, :] = pop_t * mort_rates[y, :]
+        pop_tp1 = np.zeros_like(pop_t)
+        pop_tp1[1:] = (
+            pop_t[:-1] * (1 - mort_rates[y, :]) + pop_t * imm_rates[y, :]
+        )
+        pop_tp1[0] = (pop_t * fert_rates[y, :]).sum() * (1 - infmort_rates[y])
+        pop_t = pop_tp1
+    # now loop over all years for which pop data fixed
+    for yy in range(initial_years, num_years):
+        deaths[yy, :] = pop_t * mort_rates[-1, :]
+        pop_tp1 = np.zeros_like(pop_t)
+        pop_tp1[1:] = (
+            pop_t[:-1] * (1 - mort_rates[-1, :]) + pop_t * imm_rates[-1, :]
+        )
+        pop_tp1[0] = (pop_t * fert_rates[-1, :]).sum() * (
+            1 - infmort_rates[-1]
+        )
+        pop_t = pop_tp1
+
+    return deaths

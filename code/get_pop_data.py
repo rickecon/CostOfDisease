@@ -276,7 +276,8 @@ def total_deaths(
         deaths[y, :] = pop_t * mort_rates[y, :]
         pop_tp1 = np.zeros_like(pop_t)
         pop_tp1[1:] = (
-            pop_t[:-1] * (1 - mort_rates[y, :]) + pop_t * imm_rates[y, :]
+            pop_t[:-1] * (1 - mort_rates[y, :-1])
+            + pop_t[:-1] * imm_rates[y, :-1]
         )
         pop_tp1[0] = (pop_t * fert_rates[y, :]).sum() * (1 - infmort_rates[y])
         pop_t = pop_tp1
@@ -285,7 +286,8 @@ def total_deaths(
         deaths[yy, :] = pop_t * mort_rates[-1, :]
         pop_tp1 = np.zeros_like(pop_t)
         pop_tp1[1:] = (
-            pop_t[:-1] * (1 - mort_rates[-1, :]) + pop_t * imm_rates[-1, :]
+            pop_t[:-1] * (1 - mort_rates[-1, :-1])
+            + pop_t[:-1] * imm_rates[-1, :-1]
         )
         pop_tp1[0] = (pop_t * fert_rates[-1, :]).sum() * (
             1 - infmort_rates[-1]

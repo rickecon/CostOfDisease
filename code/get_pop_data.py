@@ -200,7 +200,7 @@ def disease_pop(
     )
     scale_factor = res.x[0]
 
-    # TODO: phase in the change in mort rates over 5 years
+    # phase in the change in mort rates over 5 years
     num_years = 5
     alt_mort_rates = np.zeros((num_years, p.S + p.E))
     infmort_rates = np.zeros((num_years))

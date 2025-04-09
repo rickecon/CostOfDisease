@@ -9,7 +9,7 @@ import os
 import matplotlib.ticker as mticker
 from ogcore import parameter_plots as pp
 from ogcore import output_plots as op
-from ogcore.utils import pct_change_unstationarized
+from ogcore.utils import unstationarize_vars
 
 # Use a custom matplotlib style file for plots
 plt.style.use("ogcore.OGcorePlots")
@@ -204,14 +204,19 @@ def plots(
         "Diffs": {},
     }
     for k in reform_dict.keys():
-        GDP_series["Pct Changes"][k] = pct_change_unstationarized(
-            base_tpi,
-            base_params,
+        Y_ref = unstationarize_vars(
+            "Y",
             reform_dict[k]["tpi_vars"],
             reform_dict[k]["params"],
-            output_vars=["Y"],
-        )["Y"]
-
+        )
+        Y_base = unstationarize_vars(
+            "Y",
+            base_tpi,
+            base_params,
+        )
+        GDP_series["Pct Changes"][k] = (
+            Y_ref[:NUM_YEARS_NPV] - Y_base[:NUM_YEARS_NPV]
+        ) / Y_base[:NUM_YEARS_NPV]
         GDP_series["Levels"][k] = GDP_series["Baseline Forecast"][
             :NUM_YEARS_NPV
         ] * (1 + GDP_series["Pct Changes"][k][:NUM_YEARS_NPV])

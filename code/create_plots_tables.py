@@ -161,7 +161,35 @@ def plots(
     plt.legend(loc="lower left")
     fig.savefig(os.path.join(plot_path, "pop_dist_2050.png"), dpi=300)
 
-    # TODO: Plot cumulative excess deaths
+    # Plot cumulative excess deaths
+    # Compute and plot aggregage deaths by year
+    death_dict = {
+        "Baseline": baseline_deaths.sum(axis=1),
+    }
+    for k in reform_dict.keys():
+        death_dict[k] = reform_dict[k]["deaths"].sum(axis=1)
+    # Put in dataframe
+    death_df = pd.DataFrame.from_dict(death_dict)
+    # save as csv
+    death_df.to_csv(os.path.join(plot_path, "deaths.csv"), index=False)
+    # plot
+    num_years_plot = 100
+    fig, ax = plt.subplots()
+    for k in reform_dict.keys():
+        plt.plot(
+            np.arange(
+                base_params.start_year, base_params.start_year + num_years_plot
+            ),
+            (death_df[k] - death_df["Baseline"])[:num_years_plot].cumsum()
+            / 1_000_000,
+            label=k,
+        )
+    plt.xlabel("Year")
+    plt.ylabel("Cumulative Excess Deaths (millions)")
+    plt.legend(loc="upper left")
+    fig.savefig(
+        os.path.join(plot_path, "cumulative_excess_deaths.png"), dpi=300
+    )
 
     # Create table of level changes in macro variables
     # African GDP over a long time period (or extrapolate from some shorter term forecast)

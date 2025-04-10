@@ -62,9 +62,16 @@ def main():
     p.update_specifications(defaults)
 
     # get baseline population data (rather than use what is in JSON)
-    pop_dict, fert_rates, mort_rates, infmort_rates, imm_rates = (
-        get_pop_data.baseline_pop(p)
-    )
+    (
+        pop_dict,
+        pop_dist,
+        pre_pop_dist,
+        fert_rates,
+        mort_rates,
+        infmort_rates,
+        imm_rates,
+        baseline_deaths,
+    ) = get_pop_data.baseline_pop(p)
     p.update_specifications(pop_dict)
 
     # Run model
@@ -84,8 +91,10 @@ def main():
     p2.output_base = median_dir
 
     # Find new population with excess deaths
-    new_pop_dict = get_pop_data.disease_pop(
+    new_pop_dict, median_deaths = get_pop_data.disease_pop(
         p2,
+        pop_dist,
+        pre_pop_dist,
         fert_rates,
         mort_rates,
         infmort_rates,
@@ -122,8 +131,10 @@ def main():
     p3.output_base = low_dir
 
     # Find new population with excess deaths
-    new_pop_dict = get_pop_data.disease_pop(
+    new_pop_dict, low_deaths = get_pop_data.disease_pop(
         p3,
+        pop_dist,
+        pre_pop_dist,
         fert_rates,
         mort_rates,
         infmort_rates,
@@ -155,8 +166,10 @@ def main():
     p4.output_base = high_dir
 
     # Find new population with excess deaths
-    new_pop_dict = get_pop_data.disease_pop(
+    new_pop_dict, high_deaths = get_pop_data.disease_pop(
         p4,
+        pop_dist,
+        pre_pop_dist,
         fert_rates,
         mort_rates,
         infmort_rates,
@@ -180,8 +193,8 @@ def main():
     """
     ---------------------------------------------------------------------------
     Simulate "AIM-high" scenario (and 150% of productivity losses)
-    Estimated deaths from Annals of Internal Medicine (AIM) Susceptible scenario, 
-    complete cutback (PEPFAR = 0%) = 1_326_\_000 over 10 years + CGD estimates for the other diseases
+    Estimated deaths from Annals of Internal Medicine (AIM) Susceptible scenario,
+    complete cutback (PEPFAR = 0%) = 1_326_000 over 10 years + CGD estimates for the other diseases
     ---------------------------------------------------------------------------
     """
     # create new Specifications object for reform simulation
@@ -190,8 +203,10 @@ def main():
     p5.output_base = aim_dir
 
     # Find new population with excess deaths
-    new_pop_dict = get_pop_data.disease_pop(
+    new_pop_dict, aims_deaths = get_pop_data.disease_pop(
         p5,
+        pop_dist,
+        pre_pop_dist,
         fert_rates,
         mort_rates,
         infmort_rates,
@@ -233,6 +248,7 @@ def main():
             "params": safe_read_pickle(
                 os.path.join(low_dir, "model_params.pkl")
             ),
+            "deaths": low_deaths,
         },
         "Median Excess Deaths": {
             "tpi_vars": safe_read_pickle(
@@ -241,6 +257,7 @@ def main():
             "params": safe_read_pickle(
                 os.path.join(median_dir, "model_params.pkl")
             ),
+            "deaths": median_deaths,
         },
         "High Excess Deaths": {
             "tpi_vars": safe_read_pickle(
@@ -249,6 +266,7 @@ def main():
             "params": safe_read_pickle(
                 os.path.join(high_dir, "model_params.pkl")
             ),
+            "deaths": high_deaths,
         },
         "AIM Excess Deaths": {
             "tpi_vars": safe_read_pickle(
@@ -257,6 +275,7 @@ def main():
             "params": safe_read_pickle(
                 os.path.join(aim_dir, "model_params.pkl")
             ),
+            "deaths": aims_deaths,
         },
     }
 
@@ -267,7 +286,12 @@ def main():
         "real_gdp"
     ].values
     create_plots_tables.plots(
-        base_tpi, base_params, reform_dict, forecast, plot_path
+        base_tpi,
+        base_params,
+        baseline_deaths,
+        reform_dict,
+        forecast,
+        plot_path,
     )
 
 

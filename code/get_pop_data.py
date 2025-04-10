@@ -3,14 +3,21 @@ import numpy as np
 from scipy.optimize import minimize
 from ogcore import demographics
 from ogcore.parameters import Specifications
+import os
+
+CUR_DIR = os.path.dirname(os.path.realpath(__file__))
+DEMOG_PATH = os.path.join(CUR_DIR, "demographic_data")
 
 
-def baseline_pop(p, un_country_code="710"):
+def baseline_pop(p, un_country_code="710", download=False):
     """
     Returns objects for the baseline population
 
     Args:
         p (Specifications): baseline parameters
+        un_country_code (str): UN country code
+        download (bool): whether to download the data or use that
+            checked into repo
 
     Returns:
         dict: population objects
@@ -19,46 +26,81 @@ def baseline_pop(p, un_country_code="710"):
         infmort_rates (np.array): infant mortality rates
         imm_rates (np.array): immigration rates
     """
-    # get initial population objects
-    pop_dist, pre_pop_dist = demographics.get_pop(
-        p.E,
-        p.S,
-        0,
-        99,
-        country_id=un_country_code,
-        start_year=p.start_year,
-        end_year=p.start_year + 1,
-    )
-    fert_rates = demographics.get_fert(
-        p.E + p.S,
-        0,
-        99,
-        country_id=un_country_code,
-        start_year=p.start_year,
-        end_year=p.start_year + 1,
-        graph=False,
-    )
-    mort_rates, infmort_rates = demographics.get_mort(
-        p.E + p.S,
-        0,
-        99,
-        country_id=un_country_code,
-        start_year=p.start_year,
-        end_year=p.start_year + 1,
-        graph=False,
-    )
-    imm_rates = demographics.get_imm_rates(
-        p.E + p.S,
-        0,
-        99,
-        country_id=un_country_code,
-        fert_rates=fert_rates,
-        mort_rates=mort_rates,
-        infmort_rates=infmort_rates,
-        pop_dist=pop_dist,
-        start_year=p.start_year,
-        end_year=p.start_year + 1,
-        graph=False,
+    if download:
+        # get initial population objects
+        pop_dist, pre_pop_dist = demographics.get_pop(
+            p.E,
+            p.S,
+            0,
+            99,
+            country_id=un_country_code,
+            start_year=p.start_year,
+            end_year=p.start_year + 1,
+            download_path=DEMOG_PATH,
+        )
+        fert_rates = demographics.get_fert(
+            p.E + p.S,
+            0,
+            99,
+            country_id=un_country_code,
+            start_year=p.start_year,
+            end_year=p.start_year + 1,
+            graph=False,
+            download_path=DEMOG_PATH,
+        )
+        mort_rates, infmort_rates = demographics.get_mort(
+            p.E + p.S,
+            0,
+            99,
+            country_id=un_country_code,
+            start_year=p.start_year,
+            end_year=p.start_year + 1,
+            graph=False,
+            download_path=DEMOG_PATH,
+        )
+        imm_rates = demographics.get_imm_rates(
+            p.E + p.S,
+            0,
+            99,
+            country_id=un_country_code,
+            fert_rates=fert_rates,
+            mort_rates=mort_rates,
+            infmort_rates=infmort_rates,
+            pop_dist=pop_dist,
+            start_year=p.start_year,
+            end_year=p.start_year + 1,
+            graph=False,
+            download_path=DEMOG_PATH,
+        )
+    else:
+        pop_dist = np.loadtxt(
+            os.path.join(DEMOG_PATH, "population_distribution.csv"),
+            delimiter=",",
+        )
+        pre_pop_dist = np.loadtxt(
+            os.path.join(DEMOG_PATH, "pre_period_population_distribution.csv"),
+            delimiter=",",
+        )
+        fert_rates = np.loadtxt(
+            os.path.join(DEMOG_PATH, "fert_rates.csv"), delimiter=","
+        )
+        mort_rates = np.loadtxt(
+            os.path.join(DEMOG_PATH, "mort_rates.csv"), delimiter=","
+        )
+        infmort_rates = np.loadtxt(
+            os.path.join(DEMOG_PATH, "infmort_rates.csv"), delimiter=","
+        )
+        imm_rates = np.loadtxt(
+            os.path.join(DEMOG_PATH, "immigration_rates.csv"), delimiter=","
+        )
+
+    deaths = total_deaths(
+        pop_dist,
+        fert_rates,
+        mort_rates,
+        infmort_rates,
+        imm_rates,
+        num_years=200,
     )
 
     pop_dict = demographics.get_pop_objs(
@@ -80,7 +122,16 @@ def baseline_pop(p, un_country_code="710"):
         GraphDiag=False,
     )
 
-    return pop_dict, fert_rates, mort_rates, infmort_rates, imm_rates
+    return (
+        pop_dict,
+        pop_dist,
+        pre_pop_dist,
+        fert_rates,
+        mort_rates,
+        infmort_rates,
+        imm_rates,
+        deaths,
+    )
 
 
 def excess_death_dist(
@@ -111,6 +162,8 @@ def excess_death_dist(
 
 def disease_pop(
     p,
+    pop_dist,
+    pre_pop_dist,
     fert_rates,
     mort_rates,
     infmort_rates,
@@ -137,15 +190,6 @@ def disease_pop(
         dict: population objects
 
     """
-    pop_dist, pre_pop_dist = demographics.get_pop(
-        p.E,
-        p.S,
-        0,
-        99,
-        country_id=un_country_code,
-        start_year=p.start_year,
-        end_year=p.start_year + 1,
-    )
 
     # use the scipy minimize function to find the scale factor
     scale_factor_guess = 0.01
@@ -156,7 +200,7 @@ def disease_pop(
     )
     scale_factor = res.x[0]
 
-    # TODO: phase in the change in mort rates over 5 years
+    # phase in the change in mort rates over 5 years
     num_years = 5
     alt_mort_rates = np.zeros((num_years, p.S + p.E))
     infmort_rates = np.zeros((num_years))
@@ -173,6 +217,15 @@ def disease_pop(
         fert_rates[0, :].reshape(1, p.S + p.E), (num_years, 1)
     )
     imm_rates = np.tile(imm_rates[0, :].reshape(1, p.S + p.E), (num_years, 1))
+
+    deaths = total_deaths(
+        pop_dist,
+        fert_rates,
+        alt_mort_rates,
+        infmort_rates,
+        imm_rates,
+        num_years=200,
+    )
 
     pop_dict = demographics.get_pop_objs(
         p.E,
@@ -193,4 +246,52 @@ def disease_pop(
         GraphDiag=False,
     )
 
-    return pop_dict
+    return pop_dict, deaths
+
+
+def total_deaths(
+    pop_dist, fert_rates, mort_rates, infmort_rates, imm_rates, num_years=200
+):
+    """
+    This function computes total deaths each year for num_years.
+
+    Args:
+        pop_dist (NumPy array): number of people of each age
+        fert_rates (NumPy array): fertility rates at each age
+        mort_rates (NumPy array): mortality rates at each age
+        infmort_rates (NumPy array): infant mortality rates by year
+        imm_rates (NumPy array): immigration rates at each age
+        num_years (int): number of years for death forecast
+
+    Returns
+        deaths fert_rates (NumPy array): number deaths for each year and age
+    """
+    # start by looping over years in population objects
+    initial_years = mort_rates.shape[0]
+    # initialize death array
+    deaths = np.zeros((num_years, mort_rates.shape[1]))
+    # Loop over years in pop data passed in
+    pop_t = pop_dist[0, :]
+    for y in range(initial_years):
+        deaths[y, :] = pop_t * mort_rates[y, :]
+        pop_tp1 = np.zeros_like(pop_t)
+        pop_tp1[1:] = (
+            pop_t[:-1] * (1 - mort_rates[y, :-1])
+            + pop_t[:-1] * imm_rates[y, :-1]
+        )
+        pop_tp1[0] = (pop_t * fert_rates[y, :]).sum() * (1 - infmort_rates[y])
+        pop_t = pop_tp1
+    # now loop over all years for which pop data fixed
+    for yy in range(initial_years, num_years):
+        deaths[yy, :] = pop_t * mort_rates[-1, :]
+        pop_tp1 = np.zeros_like(pop_t)
+        pop_tp1[1:] = (
+            pop_t[:-1] * (1 - mort_rates[-1, :-1])
+            + pop_t[:-1] * imm_rates[-1, :-1]
+        )
+        pop_tp1[0] = (pop_t * fert_rates[-1, :]).sum() * (
+            1 - infmort_rates[-1]
+        )
+        pop_t = pop_tp1
+
+    return deaths

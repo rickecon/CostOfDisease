@@ -69,6 +69,18 @@ def plots(
     fig_path = os.path.join(plot_path, "mortality_rates")
     plt.savefig(fig_path, dpi=300)
 
+    # Print differences in mortality rates at 2025, 2040, 2100
+    print("Mortality Rates at 2025, 2040, 2100")
+    for year in [2025, 2040, 2100]:
+        print(
+            year,
+            " diff: ",
+            reform_dict["Low Excess Deaths"]["params"].rho[
+                year - base_params.start_year, 50
+            ]
+            - base_params.rho[year - base_params.start_year, 50],
+        )
+
     # plot survival rates
     p0 = param_list[0]
     age_per = np.linspace(p0.E, p0.E + p0.S, p0.S)

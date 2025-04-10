@@ -46,7 +46,7 @@ def plots(
     param_list = [base_params] + [
         reform_dict[k]["params"] for k in reform_dict.keys()
     ]
-    labels_list = ["Baseline"] + [k for k in reform_dict.keys()]
+    labels_list = ["With US Aid"] + [k for k in reform_dict.keys()]
     # Plot mort rates in different scenarios
     years = [BASELINE_YEAR_TO_PLOT]
     p0 = param_list[0]
@@ -164,7 +164,7 @@ def plots(
     # Plot cumulative excess deaths
     # Compute and plot aggregage deaths by year
     death_dict = {
-        "Baseline": baseline_deaths.sum(axis=1),
+        "With US Aid": baseline_deaths.sum(axis=1),
     }
     for k in reform_dict.keys():
         death_dict[k] = reform_dict[k]["deaths"].sum(axis=1)
@@ -180,7 +180,7 @@ def plots(
             np.arange(
                 base_params.start_year, base_params.start_year + num_years_plot
             ),
-            (death_df[k] - death_df["Baseline"])[:num_years_plot].cumsum()
+            (death_df[k] - death_df["With US Aid"])[:num_years_plot].cumsum()
             / 1_000_000,
             label=k,
         )
@@ -272,7 +272,7 @@ def plots(
     plt.plot(
         years,
         np.log(GDP_series["Baseline Forecast"][:idx] / 1e9),
-        label="Baseline",
+        label="With US Aid",
     )
     for k in reform_dict.keys():
         plt.plot(

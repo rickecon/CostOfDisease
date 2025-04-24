@@ -75,11 +75,11 @@
 \begin{titlepage}
 \title{The Economic Costs of a Resurgence of Disease in South Africa}
 \date{March 2025}
-\author{\href{http://jasondebacker.com/}{Jason DeBacker}\thanks{University of South Carolina, Darla Moore School of Business, Department of Economics, \href{mailto:jason.debacker@moore.sc.edu}{jason.debacker@moore.sc.edu}. All Python code and documentation for the computational examples and analyses are available at \href{https://github.com/OpenSourceEcon/CostOfDisease}{https://github.com/OpenSourceEcon/CostOfDisease}.}\and \href{https://sites.google.com/site/rickecon}{Richard W. Evans}\thanks{\href{https://abundance.institute/}{Abundance Institute}, \href{mailto:rick@abundance.institute}{rick@abundance.institute}.}\and Marcelo T. LaFleur\thanks{United Nations Department of Economic Social Affairs}, \href{mailto:lafleurm@un.org}{lafleurm@un.org}.}
+\author{\href{http://jasondebacker.com/}{Jason DeBacker}\thanks{University of South Carolina, Darla Moore School of Business, Department of Economics, \href{mailto:jason.debacker@moore.sc.edu}{jason.debacker@moore.sc.edu}.}\and \href{https://sites.google.com/site/rickecon}{Richard W. Evans}\thanks{\href{https://abundance.institute/}{Abundance Institute}, \href{mailto:rick@abundance.institute}{rick@abundance.institute}.}\and {Marcelo T. LaFleur}\thanks{{United Nations Department of Economic Social Affairs}, \href{mailto:lafleurm@un.org}{lafleurm@un.org}. The views and opinions expressed herein are the author's and do not necessarily reflect those of the United Nations Secretariat.}}
 \maketitle
 \vspace{-2mm}
 \begin{abstract}
-\small{Reductions in U.S. foreign aid are expected to have significant public health impacts.  We estimate the economic costs of these reductions in terms of lost health and productivity for South Africa.  We find that the reductions in foreign aid and expected significant increases in disease and premature death, will have very large and negative impacts on the South African economy.  In our preferred specification, the costs exceed XX trillion rand (about \$X trillion dollars) in net present value.}
+\small{Reductions in U.S. foreign aid are expected to have significant public health impacts.  We estimate the economic costs of these reductions in terms of lost health and productivity for South Africa.  We find that the reductions in foreign aid and expected significant increases in disease and premature death, will have very large and negative impacts on the South African economy.  In our preferred specification, the costs exceed \$3.1 trillion dollars in net present value.}
 
 \vspace{10mm}
 
@@ -117,21 +117,25 @@ The human toll of this withdrawal is projected to be devastating. \citet{KS2025}
 
 For South Africa, the various sources estimate excess deaths from HIV alone could amount anywhere from 14,000 to 192,000 annually, depending on the scenario. In addition to the direct loss of life, the increased disease burden resulting from disrupted treatment is expected to increase absenteeism and reduce labor productivity. These illness-related work absences can significantly lower effective labor supply \citep{Keogh2024,Panda2024}. These estimates highlight the scale of the crisis and provide the basis for our economic simulation.
 
-We estimate the macroeconomic impact of this aid withdrawal using an overlapping generations (OG) model calibrated for South Africa. We use the mortality scenarios derived from recent projections by \citet{KS2025} and by \citet{Gandhi2025} and expected changes to labor productivity associated with the higher disease burden \citep{Keogh2024,Panda2024}. In our framework, higher mortality and increased illness-related disutility of labor lead to reductions in labor supply, human capital, and long-run output. Scenarios range from a ``Resilient'' response in which the health system partially absorbs the shock, to a ``Susceptible'' case in which mortality surges by 84\% relative to the baseline.
+We estimate the macroeconomic impact of this aid withdrawal using an overlapping generations model calibrated for South Africa. We use the mortality scenarios derived from recent projections by \citet{KS2025} and by \citet{Gandhi2025} and expected changes to labor productivity associated with the higher disease burden \citep{Keogh2024,Panda2024}. In our framework, higher mortality and increased illness-related disutility of labor lead to reductions in labor supply, human capital, and long-run output. 
 
 By evaluating these scenarios, this paper contributes to understanding the long-run economic costs of disease and the structural fragility of health systems that are highly dependent on external financing. The findings highlight not only the human toll of abrupt aid cessation but also its deep implications for macroeconomic performance and national development.
 
 
+
+
 \section{Methodology}\label{SecMethod}
 
-We use the OG-ZAF model (cite it) to estimate the economic costs of a resurgence of disease in South Africa.  The model is a dynamic, general equilibrium model that includes a detailed representation of the South African economy, including its demographics, health, and productivity.  The model is calibrated to match the South African data and is used to simulate the economic impacts of a resurgence of disease in South Africa.
 
-\textbf{Give brief overview of model, but omit equations etc in main text.  Cite OG-Core as well as OG-ZAF (and footnote with links to docs for details).}
+We estimate the macroeconomic effects of increased disease burden using the OG-ZAF model.\footnote{OG-ZAF is a South Africa-specific extension of the open-source OG-Core model. Documentation for OG-Core is available at: \url{https://github.com/PSLmodels/OG-Core}.} OG-ZAF is a dynamic overlapping generations general equilibrium model calibrated to the demographic structure, economic parameters, and fiscal system of South Africa. It includes explicit modeling of household and firm behavior, government transfers and taxes, and age-specific labor supply and mortality rates.  \textbf{more about  OG-core}
 
-This paper evaluates the long-run macroeconomic effects of an abrupt reduction in U.S. bilateral HIV funding to South Africa. Our analysis integrates a range of epidemiological projections into a dynamic overlapping generations model of the South African economy. The model simulates the estimated changes in population structure and productivity in response to the sudden stop in external aid, allowing us to quantify the aggregate and distributional economic effects of increased mortality and morbidity due to disruptions in HIV programming.
+We introduce exogenous shocks to mortality and productivity to reflect the effects of an abrupt reduction in external health financing. These shocks are implemented as changes to the age-specific mortality rates and labor disutility parameters in the model, capturing the consequences of untreated or poorly managed HIV and tuberculosis.
+
+The central scenario used in our analysis—the \textit{median excess deaths} scenario—incorporates epidemiological projections of excess mortality, combined with estimates of absenteeism and labor force withdrawal due to disease. These inputs are described in detail below. The resulting demographic and productivity shocks are introduced into the model and held constant from 2025 onward. To assess the sensitivity of outcomes to the magnitude of the health impact, we also simulate two alternative scenarios. In the \textit{low excess deaths} scenario, all mortality and productivity shocks are scaled down by a factor of 0.5 relative to the median case. In the \textit{high excess deaths} scenario, they are scaled up by a factor of 1.5. 
+
 
 \subsection{Epidemiological Scenarios}
-We use the clinical and economic projections from \citet{KS2025}, \citet{Gandhi2025}, and \citet{Brink2025}.
+To estimate the number of excess deaths we use the clinical and economic projections from \citet{KS2025}, \citet{Gandhi2025}, and \citet{Brink2025}.
 
 \citet{KS2025} estimate the lives saved by U.S. foreign aid through both gross and net approaches. For HIV/AIDS, their gross estimate is based on the number of individuals receiving PEPFAR-funded antiretroviral therapy, combined with survival rates for untreated HIV to calculate an annualized total of 1.6 million lives saved (though the authors suggest this estimate is biased by the presence of small countries with high HIV prevalence). Their net estimate relies on a differences-in-differences analysis which compares adult mortality trends in PEPFAR focus countries to non-PEPFAR recipient control countries. This analysis suggests that PEPFAR reduced all-cause mortality by roughly three deaths per 1,000 adults annually. Applying this to total U.S. global HIV/AIDS aid yields an upper-bound estimate of nearly 3 million deaths averted per year, though the authors note this may overstate the true effect. For South Africa the authors estimate that 192,212 lives are saved each year due to US funding, and this is used as the upper-bound of expected lives lost due to the cancellation of US health aid.
 
@@ -139,17 +143,9 @@ We use the clinical and economic projections from \citet{KS2025}, \citet{Gandhi2
 
 \Citet{Brink2025} estimate the expected increase in HIV-related mortality across 36 PEPFAR-supported countries by combining funding reduction scenarios with empirical elasticities derived from historical changes in treatment coverage and mortality. Their results show a sharp gradient in cumulative excess deaths from 2025 to 2030, depending on the scenario. In more benign scenarios there are few additional deaths. In more severe scenarios, where PEPFAR is discontinued, the projected excess mortality over the five-year period reaches 282,950 with mitigation efforts, and 491,750 without mitigation—averaging 56,590 and 98,350 additional deaths per year, respectively.
 
-\subsection{Absenteeism and productivity scenarios}
-To simulate the economic impact of disease-related morbidity among working-age individuals, we impose an adjustment that reflect the effects of untreated or poorly managed HIV and tuberculosis which totals 0.4\% each year. These are implemented as adjustments to the labor disutility parameter, applied to the bottom 70\% of ability types among working-age individuals (ages 20–64) in the reform policy simulation. This is implemented as changes to the $\chi_n$ matrix (disutility of labor) and held constant to reflect persistent productivity losses in the absence of expanded care.
-
-\textbf{HIV-related productivity shock.}: The HIV-related productivity shock is grounded in the ILO’s global estimates of the economic impact of AIDS, which quantify those that are partially or fully unable to work \citet{ILO2018}. Historical data for South Africa from 2005 to 2020 show a sharp decline in the number of individuals partially or fully unable to work—from over 163,000 in 2005 to fewer than 2,300 in 2020—due to improved access to ART and labor market inclusion. To simulate a reversal of these gains under scenarios of reduced HIV service coverage (e.g., PEPFAR withdrawal), we assume a return to earlier levels of absenteeism. We use the ILO’s “high” scenario to estimate the degree of absenteeism of those partially unable to work, the historical shares of those fully unable to work, and the projected HIV prevalence in the labor force (23.9\%) to estimate the total absenteeism from 2025 to 2040. For the worst-case scenario we use the full impact by 2040 as the immediate and constant effect.
-
-\textbf{TB-related productivity shock.}: For tuberculosis, we apply an additional uniform productivity penalty of 0.00027581, based on South Africa’s 2023 TB incidence by age and empirical estimates of lost workdays. The estimate assumes a high-impact scenario of 0.1442\% absenteeism loss per TB case, reflecting reduced access to diagnosis and treatment. This is applied to the prevalence of TB in the working age population and held constant over time.
-
-
 
 % figure
-\begin{figure}[h]
+\begin{figure}[H]
     \caption{Mortality rates with and without aid}
     \centering
     \includegraphics[scale=0.75]{./tables_figures/mortality_rates.png}
@@ -157,52 +153,82 @@ To simulate the economic impact of disease-related morbidity among working-age i
 
 
 The population distribution is affected by the changes in mortality rates:
-\begin{figure}[h]
+\begin{figure}[H]
     \caption{The population distribution with and without aid}
     \centering
     \includegraphics[scale=0.75]{./tables_figures/pop_dist_2050.png}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
     \caption{Cumulative Deaths with and without aid}
     \centering
     \includegraphics[scale=0.75]{./tables_figures/cumulative_excess_deaths.png}
 \end{figure}
 
-Describe how we incorporate productivity effects into the model (cite that research):
 
-\begin{figure}[h]
-    \caption{Labor productivity with and without aid}
-    \centering
-    \includegraphics[scale=0.75]{./tables_figures/ability_profiles.png}
-\end{figure}
+\subsection{Absenteeism and productivity scenarios}
+To simulate the economic impact of disease-related morbidity among working-age individuals we impose an adjustment that reflect the effects on worker availability and productivity. This is a key margin of economic vulnerability in the absence of continued treatment and labor market support for people affected with HIV and tuberculosis. 
 
-\begin{figure}[h]
+The HIV-related productivity shock is grounded in the ILO’s global estimates of the economic impact of AIDS \citep{ILO2018}. That methodology distinguishes between several channels through which HIV affects the labor market: (1) premature mortality, (2) reduced productivity among HIV-positive individuals who remain employed, (3) absenteeism due to illness or caregiving responsibilities, and (4) turnover and retraining costs. The first channel is captured using our mortality scenarios described above, while this section focuses on the productivity  losses due to absenteeism and partial labor force withdrawal.
+
+Our simulation assumes a reversal of the substantial labor market gains achieved since 2005 due to reduced HIV service coverage (e.g., PEPFAR withdrawal). ILO data for South Africa from 2005 to 2020 show a sharp decline in the number of individuals partially or fully unable to work due to HIV—from over 163,000 in 2005 to fewer than 2,300 in 2020—due to improved access to ART and labor market inclusion. To quantify this we follow the ILO’s “high impact” scenario, which assumes that 50\% of HIV-positive individuals in the labor force become partially unable to work, and historical shares of those fully unable to work. Using 2020 ILO data, we apply this 50\% impairment rate to the estimated HIV prevalence in the labor force (23.9\%), covering adults aged 15–64. This calculation yields an effective reduction in labor productivity of 0.00361 by 2040. 
+
+For tuberculosis, we apply an additional uniform productivity penalty of 0.0002758, based on South Africa’s 2023 TB incidence by age and empirical estimates of lost workdays taken from a study of the impact of tuberculosis on productivity in India \citep{Keogh2024}. The estimate assumes a high-impact scenario of 0.1442\% absenteeism loss per TB case, reflecting reduced access to diagnosis and treatment. This is applied to the prevalence of TB in the working age population and held constant over time.
+
+The HIV-related and TB-related productivity shocks are combined to total a penalty of 0.00388 each year. This factor adjusts the labor disutility parameter (the $\chi_n$ matrix) and is applied to the bottom 70\% of ability types among working-age individuals (ages 20–64) in the reform policy simulation. The changes are held constant throughout the simulation to reflect persistent productivity losses in the absence of expanded care.
+
+
+\begin{figure}[H]
     \caption{Disutility of labor with and without aid}
     \centering
-    \includegraphics[scale=0.75]{./tables_figures/chi_n_values.png}
+    \includegraphics[scale=0.75]{./tables_figures/labor_supply.png}
 \end{figure}
 
-\section{The Economics Costs of Disease}\label{SecResults}
 
-We find that the economic costs of a resurgence of disease in South Africa are very large.  In our preferred specification, the costs exceed XX trillion rand (about \$X trillion dollars) in net present value.  The costs are driven by the large increases in mortality rates and the resulting reductions in labor productivity.
 
-Put in tables and figures showing: Changes in GDP over first few years, NPV of effect, plot of cumulative deaths (or number of people).
+\section{The Economic Costs of Disease}\label{SecResults}
 
-Billions of 2025 USD per year. average over 20 years.
+The simulation results show that the macroeconomic costs of a resurgence of disease in South Africa are substantial and persistent. These costs arise from sustained increases in mortality and reductions in labor productivity following the abrupt cessation of external health funding.
+
+Table~\ref{tab:avgGDPChange} presents the average annual GDP losses over the first 20 years of the simulation horizon. In the \textit{median excess deaths} scenario—our preferred specification—South Africa’s GDP declines by approximately \$21.3 billion per year (in 2025 USD). Under the \textit{low excess deaths} scenario, the annual loss is about \$11.2 billion, while in the \textit{high excess deaths} scenario, the average annual GDP loss exceeds \$31.6 billion. These losses reflect persistent reductions in effective labor supply and human capital accumulation.
+
+\begin{table}[H]
+\centering
+\caption{Average Annual GDP Change over 20 Years (billions of 2025 USD)}
 \input{tables_figures/mean_gdp_change_20years.tex}
+\label{tab:avgGDPChange}
+\end{table}
 
-NPV in billions (of 2025 USD)
+Table~\ref{tab:NPVLosses} summarizes the net present value (NPV) of cumulative GDP losses under each scenario. In the median scenario, using a 2\% discount rate, the total discounted loss amounts to \$3,129 billion (in 2025 USD). The low scenario yields an NPV loss of \$601 billion, while the high scenario projects losses exceeding \$5,512 billion. These values highlight the long-run macroeconomic consequences of disruptions to disease control and treatment services.
+
+\begin{table}[H]
+\centering
+\caption{Net Present Value of GDP Loss (billions of 2025 USD)}
 \input{tables_figures/npv_gdp_table.tex}
+\label{tab:NPVLosses}
+\end{table}
 
-Have some robustness by looking at high and low values of the forecast of excess deaths/effects on productivity.
+These results indicate that the economic burden of disease extends far beyond the direct costs to the health sector. Even in the more optimistic scenario, where the health system absorbs much of the shock, the loss in output is substantial. The high-impact scenario shows that a collapse in treatment access and mitigation capacity could result in GDP losses equivalent to \textbf{(compare to annual GDP of South Africa).}
+
+
 
 \section{Conclusion}\label{SecConc}
 
 Sum up what we said.  Compare economic costs to the amount of aid that is at stake.
 
+
+This analysis shows that the economic costs of a resurgence in disease following the abrupt withdrawal of external health aid are both large and persistent. In South Africa, the median scenario—grounded in epidemiological projections and labor market data—suggests net present value GDP losses of over \$3.1 trillion USD. Even in the most optimistic case, estimated losses exceed \$600 billion. In the high-impact scenario, losses top \$5.5 trillion, equivalent to more than \textbf{(add comparison to South Africa’s annual GDP here)}. These losses are not only large in absolute terms; they are disproportionate relative to the funding at stake. The anticipated withdrawal of U.S. global health support to South Africa amounts to less than \$1 billion annually. Our findings suggest that the long-run macroeconomic costs of withdrawing that support may be many multiples greater. 
+
+The economic damage stems not only from increased mortality, but also from more subtle and compounding effects: labor market withdrawal and reduced productivity. These channels reinforce each other over time, undermining growth and worsening inequality. While the health consequences of aid withdrawal are immediate and visible, the economic consequences unfold more slowly—and are therefore at risk of being underestimated.
+
+Our results underscore the fragility of growth in settings of high disease burden and where treatment access hinges on foreign aid. They also highlight the risks of short-term budget decisions with long-term developmental consequences. Sustaining global health investments is not only a moral imperative but also a sound macroeconomic strategy.
+
+
 \end{spacing}
-\newpage
+
+\section*{Data availability}
+
+All Python code and documentation for the computational examples and analyses are available at \href{https://github.com/OpenSourceEcon/CostOfDisease}{https://github.com/OpenSourceEcon/CostOfDisease}.
 \bibliography{disease.bib}
 
 

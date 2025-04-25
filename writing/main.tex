@@ -143,7 +143,7 @@ To estimate the number of excess deaths we use the clinical and economic project
 
 \Citet{Brink2025} estimate the expected increase in HIV-related mortality across 36 PEPFAR-supported countries by combining funding reduction scenarios with empirical elasticities derived from historical changes in treatment coverage and mortality. Their results show a sharp gradient in cumulative excess deaths from 2025 to 2030, depending on the scenario. In more benign scenarios there are few additional deaths. In more severe scenarios, where PEPFAR is discontinued, the projected excess mortality over the five-year period reaches 282,950 with mitigation efforts, and 491,750 without mitigation—averaging 56,590 and 98,350 additional deaths per year, respectively.
 
-Considering these estimates, we use 130,000 as the number of excess deaths per year in our \textit{median excess deaths} scenario. This figure is derived from the range of the estimates above and fall most closely in line with the estimates of \citet{Gandhi2025}. Due to the uncertainty in these estimates, we also conduct two other simulations. In our \textit{low excess deaths} scenario, we use 65,000 excess deaths per year, while in the \textit{high excess deaths} scenario we use 195,000 excess deaths per year.  Figure \ref{fig:cumDeaths} shows the cumulative excess deaths over the simulation horizon for each of these scenarios. The \textit{median excess deaths} scenario is shown in red, while the \textit{low excess deaths} and \textit{high excess deaths} scenarios are shown in blue and green, respectively.
+Considering these estimates, we use the estimate of an additional 132,600 excess deaths from \citet{Gandhi2025} as our central estimate. Because of the natural uncertainty of any one estimate, we also simulate a low excess death scenario.  For this, we assume excess deaths of 98.350, following \citet{Brink2025} estimates of excess deaths from disease in the absense of mitigation.  Finally, we assume a high excess death scenario that aligns with estimates from \citet{KS2025}.  In this case, we assume and additional 192,212 excess deaths. Figure \ref{fig:cumDeaths} shows the cumulative excess deaths over the simulation horizon for each of these scenarios. The low excess death scenario is shown in blue, while the middle and hig scenarios are shown in red and green, respectively.
 
 \begin{figure}[H]
     \caption{Cumulative Deaths with and without aid}
@@ -177,13 +177,13 @@ To simulate the economic impact of disease-related morbidity among working-age i
 
 The HIV-related productivity shock is grounded in the ILO's global estimates of the economic impact of AIDS \citep{ILO2018}. That methodology distinguishes between several channels through which HIV affects the labor market: (1) premature mortality, (2) reduced productivity among HIV-positive individuals who remain employed, (3) absenteeism due to illness or caregiving responsibilities, and (4) turnover and retraining costs. The first channel is captured using our mortality scenarios described above, while this section focuses on the productivity losses due to absenteeism and partial labor force withdrawal.
 
-Our simulation assumes a reversal of the substantial labor market gains achieved since 2005 due to reduced HIV service coverage (e.g., PEPFAR withdrawal). ILO data for South Africa from 2005 to 2020 show a sharp decline in the number of individuals partially or fully unable to work due to HIV—from over 163,000 in 2005 to fewer than 2,300 in 2020—due to improved access to ART and labor market inclusion. To quantify this we follow the ILO's ``high impact'' scenario, which assumes that 50\% of HIV-positive individuals in the labor force become partially unable to work, and historical shares of those fully unable to work. Using 2020 ILO data, we apply this 50\% impairment rate to the estimated HIV prevalence in the labor force (23.9\%), covering adults aged 15–64. This calculation yields an effective reduction in labor productivity of 0.00361 by 2040.
+Our simulation assumes a reversal of the substantial labor market gains achieved since 2005 due to reduced HIV service coverage (e.g., PEPFAR withdrawal). ILO data for South Africa from 2005 to 2020 show a sharp decline in the number of individuals partially or fully unable to work due to HIV—from over 163,000 in 2005 to fewer than 2,300 in 2020—due to improved access to ART and labor market inclusion. To quantify this we follow the ILO's ``high impact'' scenario, which assumes that 50\% of HIV-positive individuals in the labor force become partially unable to work, and historical shares of those fully unable to work. Using 2020 ILO data, we apply this 50\% impairment rate to the estimated HIV prevalence in the labor force (23.9\%), covering adults aged 15–64. This calculation yields an effective reduction in labor force particpation of 0.036\% by 2040.
 
-For tuberculosis, we apply an additional uniform productivity penalty of 0.0002758, based on South Africa's 2023 TB incidence by age and empirical estimates of lost workdays taken from a study of the impact of tuberculosis on productivity in India \citep{Keogh2024}. The estimate assumes a high-impact scenario of 0.1442\% absenteeism loss per TB case, reflecting reduced access to diagnosis and treatment. This is applied to the prevalence of TB in the working age population and held constant over time.
+For tuberculosis, we apply an additional uniform labor supply penalty of 0.03\%, based on South Africa's 2023 TB incidence by age and empirical estimates of lost workdays taken from a study of the impact of tuberculosis on productivity in India \citep{Keogh2024}. The estimate assumes a high-impact scenario of 0.1442\% absenteeism loss per TB case, reflecting reduced access to diagnosis and treatment. This is applied to the prevalence of TB in the working age population and held constant over time.
 
-The HIV-related and TB-related productivity shocks are combined to total a penalty of 0.00388 each year. This factor adjusts the labor disutility parameter in the model and is applied to the bottom 70\% of ability types among working-age individuals (ages 20–64) in the reform policy simulation.\footnote{This is the $\chi^n_s$ described in the OG-Core model documentation and reflects the relative value of leisure versus consumption in the household's utility function.} The changes are held constant throughout the simulation to reflect persistent productivity losses in the absence of expanded care.  The changes in the disutility of labor result in declines in labor force participation as we expect from increased disease prevalence.
+The HIV-related and TB-related productivity shocks are combined to total a penalty of 0.00388 each year. This factor adjusts the labor disutility parameter in the model and is applied to the bottom 70\% of the skill distribution among working-age individuals (ages 20–64).\footnote{This is the $\chi^n_s$ described in the OG-Core model documentation and reflects the relative value of leisure versus consumption in the household's utility function.} Applying these changes to only the bottom percentiles is intended to reflect the lower access to additional healthcare resources among this group and thus lowered ability to treat the chronic effects of disease that lead to lower labor force participation.  The changes are held constant throughout the simulation to reflect persistent productivity losses in the absence of expanded care.  The changes in the disutility of labor result in declines in labor force participation as we expect from increased disease prevalence.
 
-We apply the 0.00388 adjustment in our \textit{median excess deaths} scenario, while the \textit{low excess deaths} and \textit{high excess deaths} scenarios apply 0.00194 and 0.00582, respectively.
+We apply the 0.039\% adjustment in our mid-range scenario (with excess deaths following estiamtes of \citet{Gandhi2025}), while the low and and high-impact scenarios apply adjustments of 0.019\% and 0.058\%, respectively.
 
 % \begin{figure}[H]
 %     \caption{Disutility of labor with and without aid}
@@ -197,32 +197,50 @@ We apply the 0.00388 adjustment in our \textit{median excess deaths} scenario, w
 
 We simulate each of the three scenarious described above with the aforementioned adjustments to mortality and household disutlity of work.  The simulation results show that the macroeconomic costs of a resurgence of disease in South Africa are substantial and persistent. These costs arise from sustained increases in mortality and reductions in labor force participation following the abrupt cessation of external health funding.
 
-Table~\ref{tab:avgGDPChange} presents the average annual GDP losses over the first 20 years of the simulation horizon. In the \textit{median excess deaths} scenario—our preferred specification—South Africa's GDP declines by approximately \$21.3 billion per year (in 2025 USD). Under the \textit{low excess deaths} scenario, the annual loss is about \$11.2 billion, while in the \textit{high excess deaths} scenario, the average annual GDP loss exceeds \$31.6 billion. These losses reflect persistent reductions in effective labor supply and human capital accumulation.  Recall that \textbf{global} U.S. development assistance for health as about \$21 billion in 2021, slightly less than the average annual GDP loss in the \textit{median excess deaths} scenario.  And it must be noted that GDP impacts of disease are a very narrow measure of their true benefits to society.  But even with this strict metric, the costs-benefit ratio favors the side of continued support for health systems in South Africa.
+Table~\ref{tab:avgGDPChange} presents the average annual GDP losses over the first 20 years of the simulation horizon. In the mid-range scenario, our preferred specification, South Africa's GDP declines by approximately \$14.8 billion per year (in 2025 USD). Under the low excess deaths scenario, the annual loss is about \$11 billion, while in the high excess deaths scenario, the average annual GDP loss exceeds \$21 billion. These losses reflect persistent reductions in effective labor supply and human capital accumulation.  Recall that \textbf{global} U.S. development assistance for health as about \$21 billion in 2021, about the same as the average annual GDP loss in the high excess death scenario.  If we compare these average annual reductions in GDP to U.S. health assistance to South Africa only, which was about \$500 million in 2023, then the benefit to cost ratio would be about 22 to 1 in the low excess death scenario (lost GDP of \$11B to assistance of \$0.5B).\footnote{Source: https://foreignassistance.gov} We would also note that GDP impacts of disease are a very narrow measure of the true benefits to society of disease prevention.  Therefore, our estimates should be thought of as the most conservative way to think about the costs of increased disease prevalence. However, even with this strict metric, the costs-benefit ratio favors the side of continued support for health systems in South Africa.
 
 \begin{table}[H]
 \centering
-\caption{Average Annual GDP Change over 20 Years (billions of 2025 USD)}
-\input{tables_figures/mean_gdp_change_20years.tex}
+\caption{Average Annual GDP Change over 20 Years}
+\begin{tabular}{lr}
+  \toprule
+  Excess Death Estimate & $\Delta$ GDP, B 2025\$ \\
+  \midrule
+  Brink et al. (2025) & -10.88 \\
+  Gandhi et al. (2025) & -14.80 \\
+  Kenny \& Sandefur (2025) & -20.81 \\
+  \bottomrule
+\end{tabular}
 \label{tab:avgGDPChange}
 \end{table}
 
-Table~\ref{tab:NPVLosses} summarizes the net present value (NPV) of cumulative GDP losses under each scenario. In the median scenario, using a 2\% discount rate, the total discounted loss amounts to over \$3 trillion (in 2025 USD). The low scenario yields an NPV loss of \$601 billion, while the high scenario projects losses exceeding \$5.5 trillion. These values highlight the long-run macroeconomic consequences of disruptions to disease control and treatment services.  To compare these economics costs to the cost of prevention, we can take the amount of foreign assistance for health programs in South Africa before 2025 and assume this support would continue indefinitely. This assistance totaled about \$500 million per year.\footnote{Source: https://foreignassistance.gov} The NPV (at a 2\% discount rate) of this level of funding is \$25 billion.  So as a direct comparison, that the NPV of the economic costs of disease (\$3.1 trillion) is 120 times larger than the cost of prevention (\$25 billion).
+Table \ref{tab:NPVLosses} summarizes the net present value (NPV) of cumulative GDP losses under each scenario, with each row representing a difference discount rate used for the NPV calculation. In the median scenario, using a 2\% discount rate, the total discounted loss amounts to over \$1.4 trillion (in 2025 USD). The low scenario yields an NPV loss of \$525 billion, while the high scenario projects losses exceeding \$2.9 trillion. These values highlight the long-run macroeconomic consequences of disruptions to disease control and treatment services.  To compare these economics costs to the cost of prevention, we can take the amount of foreign assistance for health programs in South Africa before 2025 and assume this support would continue indefinitely. This assistance totaled about \$500 million per year.\footnote{Source: https://foreignassistance.gov} The NPV (at a 2\% discount rate) of providing this level of funding in perpetuity is \$25 billion.  So as a direct comparison, the NPV of the economic costs of disease (\$1.4 trillion) is 56 times larger than the cost of prevention (\$25 billion).
 
 \begin{table}[H]
 \centering
 \caption{Net Present Value of GDP Loss (billions of 2025 USD)}
-\input{tables_figures/npv_gdp_table.tex}
+\begin{tabular}{lrrr}
+  \toprule
+ Discount Rate & Brink et al. (2025) & Gandhi et al. (2025) & Kenny \& Sandefur (2025) \\
+  \midrule
+  1\% & -447.83 & -2,170.70 & -5,017.78 \\
+  2\% & -525.35 & -1,428.99 & -2,917.75 \\
+  3\% & -472.10 & -979.31 & -1,811.36 \\
+  4\% & -391.20 & -696.53 & -1,194.60 \\
+  6\% & -253.34 & -387.97 & -604.44 \\
+  \bottomrule
+\end{tabular}
 \label{tab:NPVLosses}
 \end{table}
 
-These results indicate that the economic burden of disease extends far beyond the direct costs to the health sector. Even in the more optimistic scenario, where the health system absorbs much of the shock, the loss in output is substantial. The high-impact scenario shows that a collapse in treatment access and mitigation capacity could result in GDP losses equivalent to 7.5\% of South Africa's GDP.
+These results indicate that the economic burden of disease extends far beyond the direct costs to the health sector. Even in the more optimistic scenario, where the health system absorbs much of the shock, the loss in output is substantial. The high-impact scenario shows that a collapse in treatment access and mitigation capacity could result in GDP losses equivalent to 5.5\% of South Africa's GDP.
 
-
+% NOTE: SA GDP in USD in 2023 was 380 billion.
 
 \section{Conclusion}\label{SecConc}
 
 
-This analysis shows that the economic costs of a resurgence in disease following the abrupt withdrawal of external health aid are both large and persistent. In South Africa, the median scenario—grounded in epidemiological projections and labor market data—suggests net present value GDP losses of over \$3.1 trillion USD. Even in the most optimistic case, estimated losses exceed \$600 billion in net present value. In the high-impact scenario, losses top \$5.5 trillion, over 220 times the amount of pre-2025 U.S. health assistance to South Africa. Thus, losses are not only large in absolute terms; they are disproportionate relative to the funding at stake.
+This analysis shows that the economic costs of a resurgence in disease following the abrupt withdrawal of external health aid are both large and persistent. In South Africa, the median scenario—grounded in epidemiological projections and labor market data—suggests net present value GDP losses of over \$1.4 trillion USD. Even in the most optimistic case, estimated losses exceed \$525 billion in net present value. In the high-impact scenario, losses top \$2.9 trillion, over 56 times the amount of pre-2025 U.S. health assistance to South Africa. Thus, losses are not only large in absolute terms; they are disproportionate relative to the funding at stake.
 
 The economic damage stems not only from increased mortality, but also from more subtle and compounding effects: labor market withdrawal and reduced productivity. These channels reinforce each other over time, undermining growth and worsening inequality. While the health consequences of aid withdrawal are immediate and visible, the economic consequences unfold more slowly—and are therefore at risk of being underestimated.
 

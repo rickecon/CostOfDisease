@@ -259,7 +259,7 @@ def main():
             ),
             "deaths": median_deaths,
         },
-        r"Kenny \& Sandefur (2025)": {
+        r"Kenny & Sandefur (2025)": {
             "tpi_vars": safe_read_pickle(
                 os.path.join(high_dir, "TPI", "TPI_vars.pkl")
             ),

@@ -6,6 +6,7 @@
 \usepackage[format=hang,font=normalsize,labelfont=bf]{caption}
 \usepackage{amsmath}
 \usepackage{multirow}
+\usepackage{xcolor}
 \usepackage{array}
 \usepackage{delarray}
 \usepackage{amssymb}
@@ -79,7 +80,7 @@
 \maketitle
 \vspace{-2mm}
 \begin{abstract}
-\small{[Rick thinks we should change the title to ``The Economic Costs of Public Health Spending Cuts: HIV/AIDS and Tuberculosis in South Africa''.]Our broad research question is to study the individual and macroeconomic effects of public health spending. Reductions in US foreign aid are expected to have significant public health impacts, which will generate macroeconomic impacts. We estimate the economic costs of these reductions in terms of lost health, population, and productivity for South Africa. We study South Africa because it is the country with the highest number of people living with HIV/AIDS. We find that the reductions in foreign aid and expected significant increases in disease and premature death will have large and negative impacts on the South African economy. In our preferred specification, the costs exceed \$3.1 trillion dollars in net present value, reducing economic output by more than 3.5\%. These simulations provide a quantititive estimate of the return on investment of public health spending.}
+\small{\textcolor{magenta}{[Rick thinks we should change the title to ``The Economic Costs of Public Health Spending Cuts: HIV/AIDS and Tuberculosis in South Africa''.]}Our broad research question is to study the individual and macroeconomic effects of public health spending. Reductions in US foreign aid are expected to have significant public health impacts, which will generate macroeconomic impacts. We estimate the economic costs of these reductions in terms of lost health, population, and productivity for South Africa. We study South Africa because it is the country with the highest number of people living with HIV/AIDS. We find that the reductions in foreign aid and expected significant increases in disease and premature death will have large and negative impacts on the South African economy. In our preferred specification, the costs exceed \$3.1 trillion dollars in net present value, reducing economic output by more than 3.5\%. These simulations provide a quantititive estimate of the return on investment of public health spending.}
 
 \vspace{10mm}
 
@@ -109,7 +110,7 @@ This persistent disease burden has generated far-reaching economic and social co
 
 Despite these challenges, the large-scale expansion of antiretroviral therapy (ART) for treating HIV has dramatically improved survival and reduced transmission. By 2023, approximately 77\% of HIV-positive individuals were receiving ART, reflecting one of the highest coverage rates in the region \citep{UNAIDSData2024}. This progress was made possible largely through sustained external financing and partnerships that supported clinical infrastructure, drug procurement, and health workforce training. South Africa's response to HIV and TB has thus become structurally dependent on international support. Continued access to external funding has been essential to maintaining treatment programs, expanding prevention efforts, and preserving health system resilience.
 
-South Africa's reliance also introduces vulnerabilities in the face of shifting global aid priorities. The outsized role of the United States in financing HIV/AIDS programs in low- and middle-income countries, particularly through the President's Emergency Plan for AIDS Relief (PEPFAR), results in South Africa being especially affected by US aid policy. According to the Institute for Health Metrics and Evaluation report \citep{FGH2023}, total US development assistance for health (DAH) rose from \$19.1 billion in 2021 to approximately \$20.6 billion in 2023—a 7.8\% increase. Funding for HIV/AIDS accounted for nearly \$8.6 billion of that total in 2023. South Africa is among the largest absolute recipients of this assistance, receiving funding that supports prevention programs, treatment coverage, public health infrastructure, and the training of medical personnel [List total US funding to South Africa in this sentence. Was it \$462 million in 2023? If so, that is a pretty small amount (0.12\% of GDP)]. Though countries such as Eswatini and Lesotho receive more funding per capita, the scale of South Africa's epidemic and population has made US support an indispensable foundation of its national HIV response.
+South Africa's reliance also introduces vulnerabilities in the face of shifting global aid priorities. The outsized role of the United States in financing HIV/AIDS programs in low- and middle-income countries, particularly through the President's Emergency Plan for AIDS Relief (PEPFAR), results in South Africa being especially affected by US aid policy. According to the Institute for Health Metrics and Evaluation report \citep{FGH2023}, total US development assistance for health (DAH) rose from \$19.1 billion in 2021 to approximately \$20.6 billion in 2023—a 7.8\% increase. Funding for HIV/AIDS accounted for nearly \$8.6 billion of that total in 2023. South Africa is among the largest absolute recipients of this assistance, receiving funding that supports prevention programs, treatment coverage, public health infrastructure, and the training of medical personnel \textcolor{magenta}{[List total US funding to South Africa in this sentence. Was it \$462 million in 2023? If so, that is a pretty small amount (0.12\% of GDP)]}. Though countries such as Eswatini and Lesotho receive more funding per capita, the scale of South Africa's epidemic and population has made US support an indispensable foundation of its national HIV response.
 
 In early 2025, the US government abruptly halted all USAID health disbursements, terminating more than 5,800 out of 6,300 contracts and grants globally in previously obligated commitments \citep{Cohen2025}. The fallout was immediate. The Joint United Nations Programme on HIV and AIDS (UNAIDS) lost nearly half its budget, clinics suspended services, and millions faced interruptions in care. In South Africa, public health leaders warned of a collapse in ART delivery systems, re-emergence of opportunistic infections, and surges in preventable deaths. The World Health Organization simultaneously issued an alert on disruptions to TB services, calling for urgent global action.
 
@@ -150,7 +151,7 @@ Figure \ref{fig:cumDeaths} shows the cumulative excess deaths over the simulatio
     \includegraphics[scale=0.75]{./tables_figures/cumulative_excess_deaths.png}
 \end{figure}
 
-These estimates of excess deaths are mapped into the model through changes in the age-specific mortality rates. Specifically, we begin with current age-specific mortality rates as reported by the United Nations World Population Prospects 2024 \citep{UN2024}. We assume that these South African mortality rates by age are the mortality rates that would exist if there were no change in US aid to South Africa (blue line in Figure \ref{fig:Mortality}). We then apply a percentage adjustment to the mortality rates at each age to match the forecasts of excess deaths under each scenario. Figure \ref{fig:Mortality} shows increased mortality rates resulting from our low (red dashed line), medium (green dashed line) and high (teal dotted line) excess death scenarios for each age group in 2025. [Get rid of ``2040'' in legend.]
+These estimates of excess deaths are mapped into the model through changes in the age-specific mortality rates. Specifically, we begin with current age-specific mortality rates as reported by the United Nations World Population Prospects 2024 \citep{UN2024}. We assume that these South African mortality rates by age are the mortality rates that would exist if there were no change in US aid to South Africa (blue line in Figure \ref{fig:Mortality}). We then apply a percentage adjustment to the mortality rates at each age to match the forecasts of excess deaths under each scenario. Figure \ref{fig:Mortality} shows increased mortality rates resulting from our low (red dashed line), medium (green dashed line) and high (teal dotted line) excess death scenarios for each age group in 2025. \textcolor{magenta}{[Get rid of ``2040'' in legend.]}
 
 
 \begin{figure}[H]
@@ -176,11 +177,11 @@ To simulate the economic impact of disease-related morbidity among working-age i
 
 The HIV-related productivity shock is grounded in the International Labour Office (ILO) global estimates of the economic impact of AIDS \citep{ILO2018}. That methodology distinguishes between several channels through which HIV affects the labor market: (1) premature mortality, (2) reduced productivity among HIV-positive individuals who remain employed, (3) absenteeism due to illness or caregiving responsibilities, and (4) turnover and retraining costs. The first channel is captured using our mortality scenarios described above, while this section focuses on the productivity losses due to absenteeism and partial labor force withdrawal.
 
-Our simulation assumes a reversal of the substantial labor market gains achieved since 2005 due to reduced HIV service coverage (e.g., PEPFAR withdrawal). ILO data for South Africa from 2005 to 2020 show a sharp decline in the number of individuals partially or fully unable to work due to HIV—from over 163,000 in 2005 to fewer than 2,300 in 2020—due to improved access to ART and labor market inclusion. To quantify this we follow ILO's ``high impact'' scenario, which assumes that 50\% of HIV-positive individuals in the labor force become partially unable to work, and historical shares of those fully unable to work [What does this last phrase mean?]. Using 2020 ILO data, we apply this 50\% impairment rate to the estimated HIV prevalence in the labor force (23.9\%), covering adults aged 15–64. This calculation yields an effective reduction in labor force participation of 0.036\% by 2040.
+Our simulation assumes a reversal of the substantial labor market gains achieved since 2005 due to reduced HIV service coverage (e.g., PEPFAR withdrawal). ILO data for South Africa from 2005 to 2020 show a sharp decline in the number of individuals partially or fully unable to work due to HIV—from over 163,000 in 2005 to fewer than 2,300 in 2020—due to improved access to ART and labor market inclusion. To quantify this we follow ILO's ``high impact'' scenario, which assumes that 50\% of HIV-positive individuals in the labor force become partially unable to work, and historical shares of those fully unable to work \textcolor{magenta}{[What does this last phrase mean?]}. Using 2020 ILO data, we apply this 50\% impairment rate to the estimated HIV prevalence in the labor force (23.9\%), covering adults aged 15-64. This calculation yields an effective reduction in labor force participation of 0.036\% by 2040.
 
 For tuberculosis, we apply an additional uniform labor supply penalty of 0.03\%, based on South Africa's 2023 TB incidence by age and empirical estimates of lost workdays taken from a study of the impact of tuberculosis on productivity in India \citep{Keogh2024}. The estimate assumes a high-impact scenario of 0.1442\% absenteeism loss per TB case, reflecting reduced access to diagnosis and treatment. This is applied to the prevalence of TB in the working age population and held constant over time.
 
-The HIV-related and TB-related productivity shocks are combined to total a penalty of 0.00388 each year [What does this mean?]. This factor adjusts the labor disutility parameter in the model and is applied to the bottom 70\% of the skill distribution among working-age individuals (ages 20–64).\footnote{This is the $\chi^n_s$ described in the OG-Core model documentation and reflects the relative value of leisure versus consumption in the household's utility function.} Applying these changes to only the bottom percentiles is intended to reflect the lower access to additional healthcare resources among this group and thus lowered ability to treat the chronic effects of disease that lead to lower labor force participation.  The changes are held constant throughout the simulation to reflect persistent productivity losses in the absence of expanded care.  The changes in the disutility of labor result in declines in labor force participation as we expect from increased disease prevalence.
+The HIV-related and TB-related productivity shocks are combined to total a penalty of 0.00388 each year \textcolor{magenta}{[What does this mean?]}. This factor adjusts the labor disutility parameter in the model and is applied to the bottom 70\% of the skill distribution among working-age individuals (ages 20-64).\footnote{This is the $\chi^n_s$ described in the OG-Core model documentation and reflects the relative value of leisure versus consumption in the household's utility function.} Applying these changes to only the bottom percentiles is intended to reflect the lower access to additional healthcare resources among this group and thus lowered ability to treat the chronic effects of disease that lead to lower labor force participation.  The changes are held constant throughout the simulation to reflect persistent productivity losses in the absence of expanded care.  The changes in the disutility of labor result in declines in labor force participation as we expect from increased disease prevalence.
 
 We apply the 0.039\% adjustment in our mid-range scenario (with excess deaths following estimates of \citet{Gandhi2025}), while the low and and high-impact scenarios apply adjustments of 0.019\% and 0.058\%, respectively.
 
@@ -197,7 +198,7 @@ Our results in Section \ref{SecResults} of large benefits in lives and output fr
 
 Gross government debt as a percent of GDP has been steadily rising in South Africa from its value of 24.0\% in 2008 to 76.4\% in 2024.\footnote{See Federal Reserve Economic Data (FRED), General government gross debt for South Africa (GGGDTAZAA188N), \href{https://fred.stlouisfed.org/series/GGGDTAZAA188N}{https://fred.stlouisfed.org/series/GGGDTAZAA188N}.}. Not only is this level of debt high for a developing country, but South Africa's individual tax base is particularly small. Only 2.6\% of South Africans pay 76.2\% of all South African personal income taxes in the 2023/2024 fiscal year (\citealp{DailyInvestor:2024}). As such, most South African tax revenue comes from business taxes and value-added (consumption) taxes.\footnote{\citet{KeiswetterPieterse:2024} show that corporate income tax and VAT accounted for 43.9\% of government revenue together in the 2023/2024 fiscal year, while personal income tax accounted for 37.4\% of revenue.}
 
-[Add some description that points to the results in the next section.]
+\textcolor{magenta}{[Add some description that points to the results in the next section.]}
 
 
 \section{The Economic Costs of Disease}\label{SecResults}
@@ -215,9 +216,9 @@ Table \ref{tab:avgGDPChange} presents the average annual GDP losses over the fir
   \toprule
   Excess Death Estimate & $\Delta$ GDP, B 2025\$ \\
   \midrule
-  Brink et al. (2025) & -10.88 \\
-  Gandhi et al. (2025) & -14.80 \\
-  Kenny \& Sandefur (2025) & -20.81 \\
+  Brink, et al. (2025) & -10.88 \\
+  Gandhi, et al. (2025) & -14.80 \\
+  Kenny and Sandefur (2025) & -20.81 \\
   \bottomrule
 \end{tabular}
 \label{tab:avgGDPChange}
@@ -230,7 +231,7 @@ Table \ref{tab:NPVLosses} summarizes the net present value (NPV) of cumulative G
 \caption{Net Present Value of GDP Loss (billions of 2025 USD)}
 \begin{tabular}{lrrr}
   \toprule
- Discount Rate & Brink et al. (2025) & Gandhi et al. (2025) & Kenny \& Sandefur (2025) \\
+ Discount Rate & Brink, et al. (2025) & Gandhi, et al. (2025) & Kenny and Sandefur (2025) \\
   \midrule
   1\% & -447.83 & -2,170.70 & -5,017.78 \\
   2\% & -525.35 & -1,428.99 & -2,917.75 \\
@@ -248,7 +249,7 @@ These results indicate that the economic burden of disease extends far beyond th
 
 \subsection{Effects South Africa filling in the cuts with spending}\label{SecResultsSAspend}
 
-[Put section here with results on South Africa replacing the US spending cuts with its own increased spending.]
+\textcolor{magenta}{[Put section here with results on South Africa replacing the US spending cuts with its own increased spending.]}
 
 
 \section{Conclusion}\label{SecConc}

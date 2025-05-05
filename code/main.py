@@ -241,7 +241,7 @@ def main():
     # If do other sims (e.g, with high and low forecasts of excess deaths), they
     # can be added to this dictionary
     reform_dict = {
-        "Brink et al. (2025)": {
+        "Brink, et al. (2025)": {
             "tpi_vars": safe_read_pickle(
                 os.path.join(low_dir, "TPI", "TPI_vars.pkl")
             ),
@@ -250,7 +250,7 @@ def main():
             ),
             "deaths": low_deaths,
         },
-        "Gandhi et al. (2025)": {
+        "Gandhi, et al. (2025)": {
             "tpi_vars": safe_read_pickle(
                 os.path.join(median_dir, "TPI", "TPI_vars.pkl")
             ),
@@ -259,7 +259,7 @@ def main():
             ),
             "deaths": median_deaths,
         },
-        r"Kenny & Sandefur (2025)": {
+        r"Kenny and Sandefur (2025)": {
             "tpi_vars": safe_read_pickle(
                 os.path.join(high_dir, "TPI", "TPI_vars.pkl")
             ),

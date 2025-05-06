@@ -125,7 +125,7 @@ By simulating these scenarios, this paper contributes to understanding the long-
 
 \section{Methodology}\label{SecMethod}
 
-We estimate the macroeconomic effects of increased disease burden using the OG-ZAF macroeconomic model.\footnote{OG-ZAF is an open source large scale dynamic general equilibrium overlapping generations model of the South African macroeconomy. Documentation for OG-ZAF is available at \href{https://eapd-drb.github.io/OG-ZAF}{https://eapd-drb.github.io/OG-ZAF}. And documentation for the core engine OG-Core is available at \href{https://pslmodels.github.io/OG-Core}{https://pslmodels.github.io/OG-Core}.} OG-ZAF is a dynamic overlapping generations general equilibrium model calibrated to the demographic structure, economic parameters, and fiscal system of South Africa. It includes explicit modeling of household and firm behavior, government transfers and taxes, and age-specific labor supply and mortality rates. One of the key features of this modeling framework is its ability to capture both the direct and indirect effects of disease on the economy. The direct effects of disease include reductions in labor supply and productivity due to increased mortality and morbidity. The indirect effects include changes in capital accumulation, government budgets, and market prices, which will in turn affect labor supply and the overall economy.
+We estimate the macroeconomic effects of increased disease burden using the OG-ZAF macroeconomic model.\footnote{OG-ZAF is an open source large scale dynamic general equilibrium overlapping generations model of the South African macroeconomy. Documentation for OG-ZAF is available at \href{https://eapd-drb.github.io/OG-ZAF}{https://eapd-drb.github.io/OG-ZAF}. And documentation for the core engine OG-Core is available at \href{https://pslmodels.github.io/OG-Core}{https://pslmodels.github.io/OG-Core}.} OG-ZAF is a dynamic overlapping generations general equilibrium model calibrated to the demographic dynamics, economic parameters, and fiscal system of South Africa. It includes explicit modeling of household and firm behavior, government transfers and taxes, and age-specific labor supply and mortality rates. One of the key features of this modeling framework is its ability to capture both the direct and indirect effects of disease on the economy. The direct effects of disease include reductions in labor supply and productivity due to increased mortality and morbidity. The indirect effects include changes in capital accumulation, government budgets, and market prices, which will in turn affect labor supply and the overall economy.
 
 We introduce exogenous shocks to mortality and productivity to reflect the effects of an abrupt reduction in external health financing. These shocks are implemented as changes to the age-specific mortality rates and labor disutility parameters in the model, capturing the consequences of untreated or poorly managed HIV and tuberculosis.
 
@@ -136,13 +136,13 @@ The resulting demographic and productivity shocks are introduced into the model,
 
 \subsection{Epidemiological Scenarios}
 
-\citet{Brink2025} estimate the expected increase in HIV-related mortality across 36 PEPFAR-supported countries by combining funding reduction scenarios with empirical elasticities derived from historical changes in treatment coverage and mortality. Their results show a sharp gradient in cumulative excess deaths from 2025 to 2030, depending on the scenario. In more benign scenarios there are few additional deaths. In more severe scenarios, where PEPFAR is discontinued, the projected excess mortality over the five-year period reaches 282,950 with mitigation efforts, and 491,750 without mitigation—averaging 56,590 and 98,350 additional deaths per year, respectively. We use this latter figure of 98,350 additional deaths per year as our \textit{low excess deaths scenario}.
+\citet{Brink2025} estimate the expected increase in HIV-related mortality across 36 PEPFAR-supported countries by combining funding reduction scenarios with empirical elasticities derived from historical changes in treatment coverage and mortality. Their results show a sharp gradient in cumulative excess deaths from 2025 to 2030, depending on the scenario. In more benign scenarios there are few additional deaths. In more severe scenarios, where PEPFAR is discontinued, the projected excess mortality over the five-year period reaches 282,950 with mitigation efforts, and 491,750 without mitigation—averaging 56,590 and 98,350 additional deaths per year, respectively. We use this latter figure of 98,350 additional deaths per year as our \textit{low excess deaths scenario}. Despite this being the upper bound of the \citet{Brink2025} excess death estimates, this is the lowest estimate of the three studies we consider.
 
-\citet{Gandhi2025} model clinical and economic outcomes under three scenarios of PEPFAR funding in 2024: full support, partial support, and complete withdrawal. Using the CEPAC-International microsimulation model,\footnote{https://mpec.massgeneral.org/cepac-model.} they project changes in HIV incidence, treatment coverage, and AIDS-related mortality in South Africa. The model tracks disease progression, care engagement, and mortality for both people with HIV and those at risk. Importantly, they also consider the effects of funding cuts on testing capacity, re-engagement in care, and prevention services. Under a scenario of complete withdrawal, the model estimates as many as 1.3 million excess deaths over ten years in South Africa, relative to full funding, or 132,600 annual deaths. We use this estimate of 132,600 annual excess deaths as our \textit{medium excess deaths scenario}.
+\citet{Gandhi2025} model clinical and economic outcomes under three scenarios of PEPFAR funding in 2024: full support, partial support, and complete withdrawal. Using the CEPAC-International microsimulation model,\footnote{See \href{https://mpec.massgeneral.org/cepac-model}{https://mpec.massgeneral.org/cepac-model}.} they project changes in HIV incidence, treatment coverage, and AIDS-related mortality in South Africa. The model tracks disease progression, care engagement, and mortality for both people with HIV and those at risk. Importantly, they also consider the effects of funding cuts on testing capacity, re-engagement in care, and prevention services. Under a scenario of complete withdrawal, they estimate as many as 1.3 million excess deaths over ten years in South Africa, relative to full funding, or 132,600 annual deaths. We use this estimate of 132,600 annual excess deaths as our \textit{medium excess deaths scenario}.
 
-\citet{KS2025} estimate the lives saved by US foreign aid through both gross and net approaches. For HIV/AIDS, their gross estimate is based on the number of individuals receiving PEPFAR-funded antiretroviral therapy, combined with survival rates for untreated HIV to calculate an annualized total of 1.6 million lives saved.\footnote{The authors suggest this estimate is biased by the presence of small countries with high HIV prevalence.} Their net estimate relies on a differences-in-differences analysis which compares adult mortality trends in PEPFAR focus countries to non-PEPFAR recipient control countries. This analysis suggests that PEPFAR reduced all-cause mortality by roughly three deaths per 1,000 adults annually. Applying this to total US global HIV/AIDS aid yields an upper-bound estimate of nearly 3 million deaths averted per year, though the authors note this may overstate the true effect. For South Africa the authors estimate that 192,212 lives are saved each year due to US funding, and this is used as the upper-bound of expected lives lost due to the cancellation of US health aid, or the \textit{high excess deaths scenario}.
+\citet{KS2025} estimate the lives saved by US foreign aid through both gross and net approaches. For HIV/AIDS, their gross estimate is based on the number of individuals receiving PEPFAR-funded antiretroviral therapy, combined with survival rates for untreated HIV to calculate an annualized total of 1.6 million lives saved.\footnote{The authors suggest this estimate is biased by the presence of small countries with high HIV prevalence.} Their net estimate relies on a differences-in-differences analysis which compares adult mortality trends in PEPFAR focus countries to non-PEPFAR recipient control countries. This analysis suggests that PEPFAR reduced all-cause mortality by roughly three deaths per 1,000 adults annually. Applying this to total US global HIV/AIDS aid yields an upper-bound estimate of nearly 3 million deaths averted per year, though the authors note this may overstate the true effect. For South Africa the authors estimate that 192,212 lives are saved each year due to US funding. We use this estimate as our upper-bound of expected lives lost due to the cancellation of US health aid, or the \textit{high excess deaths scenario}.
 
-Figure \ref{fig:cumDeaths} shows the cumulative excess deaths over the simulation horizon for each of these scenarios. The low excess death scenario is shown in blue, while the middle and high scenarios are shown in red and green, respectively.
+Figure \ref{fig:cumDeaths} shows the cumulative excess deaths in South Africa over the simulation horizon for each of these scenarios. The low excess death scenario is shown in blue, while the middle and high scenarios are shown in red and green, respectively.
 
 \begin{figure}[H]
     \caption{Forecasted cumulative excess deaths in South Africa from US aid cuts}
@@ -192,73 +192,58 @@ We apply the 0.039\% adjustment in our mid-range scenario (with excess deaths fo
 % \end{figure}
 
 
-\subsection{South African fiscal capacity}
-
-Our results in Section \ref{SecResults} of large benefits in lives and output from public health spending begs the question of why the target country does not finance these expenditures on their own. \citet{DeBackerEtAl:2025} document some of the market failures among individuals, businesses, and government that can lead to a lack of public health investment, despite tremendous potential future gains. Regarding the government, it is likely the case that South Africa is currently stretched close to its fiscal capacity in terms of both taxation and borrowing ability.
-
-Gross government debt as a percent of GDP has been steadily rising in South Africa from its value of 24.0\% in 2008 to 76.4\% in 2024.\footnote{See Federal Reserve Economic Data (FRED), General government gross debt for South Africa (GGGDTAZAA188N), \href{https://fred.stlouisfed.org/series/GGGDTAZAA188N}{https://fred.stlouisfed.org/series/GGGDTAZAA188N}.}. Not only is this level of debt high for a developing country, but South Africa's individual tax base is particularly small. Only 2.6\% of South Africans pay 76.2\% of all South African personal income taxes in the 2023/2024 fiscal year (\citealp{DailyInvestor:2024}). As such, most South African tax revenue comes from business taxes and value-added (consumption) taxes.\footnote{\citet{KeiswetterPieterse:2024} show that corporate income tax and VAT accounted for 43.9\% of government revenue together in the 2023/2024 fiscal year, while personal income tax accounted for 37.4\% of revenue.}
-
-\textcolor{magenta}{[Add some description that points to the results in the next section.]}
-
-
 \section{The Economic Costs of Disease}\label{SecResults}
 
-\subsection{Effects of US aid cuts}\label{SecResultsCuts}
+We simulate each of the three scenarios described above with the aforementioned adjustments to mortality and household disutility of work. The simulation results show that the macroeconomic costs of a resurgence of disease in South Africa from US aid cuts are substantial and persistent. These costs arise from sustained increases in mortality and reductions in labor force participation following the abrupt cessation of external health funding.
 
-We simulate each of the three scenarios described above with the aforementioned adjustments to mortality and household disutility of work.  The simulation results show that the macroeconomic costs of a resurgence of disease in South Africa are substantial and persistent. These costs arise from sustained increases in mortality and reductions in labor force participation following the abrupt cessation of external health funding.
+Table \ref{tab:avgGDPChange} presents the average annual GDP losses over the first 20 years of the simulation horizon. In the medium scenario, our preferred specification, South Africa's GDP declines by approximately \$14.8 billion per year (in 2025 USD), or about 3.5\% of GDP. Under the low excess deaths scenario, the annual loss is about \$11 billion, while in the high excess deaths scenario, the average annual GDP loss approaches \$21 billion. These losses reflect persistent reductions in effective labor supply and human capital accumulation. Recall that total global US development assistance for health was about \$21 billion in 2021, about the same as the average annual GDP loss in the high excess death scenario. If we compare these average annual reductions in GDP to US health assistance to South Africa only, which was \$462 million in 2023, the benefit to cost ratio would be about 22 to 1 in the low excess death scenario (lost GDP of \$11B to assistance of \$0.5B).\footnote{See \href{https://foreignassistance.gov}{https://foreignassistance.gov}.} We also note that GDP impacts of disease are a very narrow measure of the true benefits to society of disease prevention.  Therefore, our estimates should be thought of as the most conservative way to think about the costs of increased disease prevalence. However, even with this strict metric, the costs-benefit ratio heavily favors the side of continued support for health systems in South Africa.
 
-Table \ref{tab:avgGDPChange} presents the average annual GDP losses over the first 20 years of the simulation horizon. In the median scenario, our preferred specification, South Africa's GDP declines by approximately \$14.8 billion per year (in 2025 USD), or about 3.5\% of GDP. Under the low excess deaths scenario, the annual loss is about \$11 billion, while in the high excess deaths scenario, the average annual GDP loss approaches \$21 billion. These losses reflect persistent reductions in effective labor supply and human capital accumulation. Recall that total global US development assistance for health was about \$21 billion in 2021, about the same as the average annual GDP loss in the high excess death scenario. If we compare these average annual reductions in GDP to US health assistance to South Africa only, which was about \$500 million in 2023, then the benefit to cost ratio would be about 22 to 1 in the low excess death scenario (lost GDP of \$11B to assistance of \$0.5B).\footnote{Source: https://foreignassistance.gov} We would also note that GDP impacts of disease are a very narrow measure of the true benefits to society of disease prevention.  Therefore, our estimates should be thought of as the most conservative way to think about the costs of increased disease prevalence. However, even with this strict metric, the costs-benefit ratio favors the side of continued support for health systems in South Africa.
-
-\begin{table}[H]
-\centering
-\caption{Average Annual GDP Change over 20 Years}
-\begin{tabular}{lr}
-  \toprule
-  Excess Death Estimate & $\Delta$ GDP, B 2025\$ \\
-  \midrule
-  Brink, et al. (2025) & -10.88 \\
-  Gandhi, et al. (2025) & -14.80 \\
-  Kenny and Sandefur (2025) & -20.81 \\
-  \bottomrule
-\end{tabular}
-\label{tab:avgGDPChange}
+\begin{table}[H] \centering \captionsetup{width=6.0in}
+  \caption{\label{tab:avgGDPChange}Average Annual South African GDP Change over 20 Years}
+  \begin{tabular}{llcc}
+    \hline\hline
+             &       & Excess deaths & Avg. annual $\Delta$ GDP \\[-1.5mm]
+    \multicolumn{1}{c}{Scenario} & \multicolumn{1}{c}{Study} & (annual) & (2025\$ billions) \\
+    \hline\hline
+    Low    & \citet{Brink2025}  &  98,350 & -10.88 \\
+    Medium & \citet{Gandhi2025} & 132,600 & -14.80 \\
+    High   & \citet{KS2025}     & 192,212 & -20.81 \\
+    \hline\hline
+  \end{tabular}
 \end{table}
 
-Table \ref{tab:NPVLosses} summarizes the net present value (NPV) of cumulative GDP losses under each scenario, with each row representing a difference discount rate used for the NPV calculation. In the median scenario, using a 2\% discount rate, the total discounted loss amounts to over \$1.4 trillion (in 2025 USD). The low scenario yields an NPV loss of \$525 billion, while the high scenario projects losses exceeding \$2.9 trillion. These values highlight the long-run macroeconomic consequences of disruptions to disease control and treatment services.  To compare these economics costs to the cost of prevention, we can take the amount of foreign assistance for health programs in South Africa before 2025 and assume this support would continue indefinitely. This assistance totaled about \$500 million per year.\footnote{Source: https://foreignassistance.gov.} The NPV (at a 2\% discount rate) of providing this level of funding in perpetuity is \$25 billion.  So as a direct comparison, the NPV of the economic costs of disease (\$1.4 trillion) is 56 times larger than the cost of prevention (\$25 billion).
+Table \ref{tab:NPVLosses} summarizes the net present value (NPV) of cumulative GDP losses under each scenario, with each row representing a difference discount rate used for the NPV calculation. In the medium scenario using a 2\% discount rate (second row, third column), the total discounted loss amounts to over \$1.4 trillion (in 2025 USD). The low scenario yields an NPV loss of \$525 billion, while the high scenario projects losses exceeding \$2.9 trillion. These values highlight the long-run macroeconomic consequences of disruptions to disease control and treatment services. To compare these economics costs to the cost of prevention, we can take the amount of foreign assistance for health programs in South Africa before 2025 and assume this support would continue indefinitely. This assistance totaled about \$500 million per year.\footnote{See \href{https://foreignassistance.gov}{https://foreignassistance.gov}.} The NPV (at a 2\% discount rate) of providing this level of funding in perpetuity is \$25 billion. So as a direct comparison, the NPV of the economic costs of disease (\$1.4 trillion) is 56 times larger than the cost of prevention (\$25 billion).
 
-\begin{table}[H]
-\centering
-\caption{Net Present Value of GDP Loss (billions of 2025 USD)}
-\begin{tabular}{lrrr}
-  \toprule
- Discount Rate & Brink, et al. (2025) & Gandhi, et al. (2025) & Kenny and Sandefur (2025) \\
-  \midrule
-  1\% & -447.83 & -2,170.70 & -5,017.78 \\
-  2\% & -525.35 & -1,428.99 & -2,917.75 \\
-  3\% & -472.10 & -979.31 & -1,811.36 \\
-  4\% & -391.20 & -696.53 & -1,194.60 \\
-  6\% & -253.34 & -387.97 & -604.44 \\
-  \bottomrule
-\end{tabular}
-\label{tab:NPVLosses}
+\begin{table}[H] \centering \captionsetup{width=6.0in}
+  \caption{\label{tab:NPVLosses}Net Present Value of GDP Loss (billions of 2025 USD)}
+  \begin{tabular}{lrrr}
+    \hline\hline
+    Discount & Low scenario & Medium scenario & High scenario \\[-1.5mm]
+    rate & \citet{Brink2025} & \citet{Gandhi2025} & \citet{KS2025} \\
+    \hline\hline
+    1\% & -447.83 & -2,170.70 & -5,017.78 \\
+    2\% & -525.35 & -1,428.99 & -2,917.75 \\
+    3\% & -472.10 & -979.31 & -1,811.36 \\
+    4\% & -391.20 & -696.53 & -1,194.60 \\
+    6\% & -253.34 & -387.97 & -604.44 \\
+    \hline\hline
+  \end{tabular}
 \end{table}
 
 These results indicate that the economic burden of disease extends far beyond the direct costs to the health sector. Even in the more optimistic scenario, where the health system absorbs much of the shock, the loss in output is substantial. The high-impact scenario shows that a collapse in treatment access and mitigation capacity could result in GDP losses equivalent to 5.5\% of South Africa's GDP.
 
 % NOTE: SA GDP in USD in 2023 was 380 billion.
 
-\subsection{Effects South Africa filling in the cuts with spending}\label{SecResultsSAspend}
-
-\textcolor{magenta}{[Put section here with results on South Africa replacing the US spending cuts with its own increased spending.]}
-
 
 \section{Conclusion}\label{SecConc}
 
-This analysis shows that the economic costs of a resurgence in disease following the abrupt withdrawal of external health aid are both large and persistent. In South Africa, the median scenario—grounded in epidemiological projections and labor market data—suggests net present value GDP losses of over \$1.4 trillion USD. Even in the most optimistic case, estimated losses exceed \$525 billion in net present value. In the high-impact scenario, losses top \$2.9 trillion, over 56 times the amount of pre-2025 US health assistance to South Africa. Thus, losses are not only large in absolute terms; they are disproportionate relative to the funding at stake.
+This analysis shows that the economic costs of a resurgence in disease following the abrupt withdrawal of external health aid are both large and persistent. In South Africa, the medium scenario---grounded in epidemiological projections and labor market data---suggests net present value GDP losses of over \$1.4 trillion USD. Even in the most optimistic case, estimated losses exceed \$525 billion in net present value. In the high-impact scenario, losses top \$2.9 trillion, over 56 times the amount of pre-2025 US health assistance to South Africa. Thus, losses are not only large in absolute terms; they are disproportionate relative to the funding at stake.
 
 The economic damage stems not only from increased mortality, but also from more subtle and compounding effects: labor market withdrawal and reduced productivity. These channels reinforce each other over time, undermining growth and worsening inequality. While the health consequences of aid withdrawal are immediate and visible, the economic consequences unfold more slowly—and are therefore at risk of being underestimated.
 
-Our results underscore the fragility of growth in settings of high disease burden and where treatment access hinges on foreign aid. They also highlight the risks of short-term budget decisions with long-term developmental consequences. Sustaining global health investments is not only a moral imperative but also a sound macroeconomic strategy.
+In the face of such large returns to economic investments in public health, one might ask why these expenditures are debated at the government level. As mentioned in the introduction, many developing countries lack the capacity to deliver the specialized infrastructure associated with public health funding. As such, it is not just a matter of cost, but also of expertise. In addition, many of the developing countries that would benefit most from public health funding are the least able to fund the expenditures required. For this reason, public health organizations should assess the potential returns, negotiate methods for delivery of services, and innovate methods to finance these expenditures.
+
+Our results underscore the fragility of growth in settings of high disease burden and where treatment access hinges on foreign aid. They also highlight the risks of short-term budget decisions with long-term developmental consequences. Macroeconomic modeling of public health investments allows a quantitative assessment of the short-, medium-, and long-run costs and benefits of these investments.
 
 
 \end{spacing}

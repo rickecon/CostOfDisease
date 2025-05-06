@@ -14,5 +14,14 @@ We have a Python script in the [`/code/`](code/) directory of this repository ca
     * In your terminal
 
 ## Files and directories in the repository
-* [`.gitignore`](.gitignore): A Git software hidden file that tells Git which files and directories to ignore changes in the version history.
-*
+* [`.gitignore`](.gitignore): A Git software hidden file that tells Git which files and directories in which to ignore changes in the version history.
+* [`./code/`](code/): Directory in which all the code and output of the model is stored.
+    * [`./code/CostOutput`](code/CostOutput): Directory in which all the parameters, equilibrium output, and plots and tables output from the baseline and three reform scenarios are stored.
+* [`LICENSE`](LICENSE): Creative Commons open source license for this repository.
+* [`README.md`](README.md): README file with instructions on the content of and how to use this repository.
+* [`./writing/](writing/): Directory in which all of the draft LaTeX files and image files are stored.
+    * [`./writing/disease.bib`](writing/disease.bib): BibTeX bibliography file for LaTeX paper references.
+    * [`./writing/main.pdf`](writing/main.pdf): PDF file of paper.
+    * [`./writing/main.tex`](writing/main.tex): LaTeX file of paper.
+    * [`./writing/tables_figures/`](writing/tables_figures/): Directory where all the image files for figures and LaTex table files for the tables are stored.
+        * []():

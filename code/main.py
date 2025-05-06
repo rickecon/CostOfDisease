@@ -74,7 +74,7 @@ def main():
     ) = get_pop_data.baseline_pop(p)
     p.update_specifications(pop_dict)
 
-    # Run model
+    Run model
     start_time = time.time()
     runner(p, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
@@ -92,7 +92,7 @@ def main():
     p2.output_base = medium_dir
 
     # Find new population with excess deaths
-    new_pop_dict, median_deaths = get_pop_data.disease_pop(
+    new_pop_dict, medium_deaths = get_pop_data.disease_pop(
         p2,
         pop_dist,
         pre_pop_dist,
@@ -123,7 +123,8 @@ def main():
 
     """
     ---------------------------------------------------------------------------
-    Simulate the scenario consistent with excess deaths from Brink et al. (2025)
+    Simulate the scenario consistent with excess deaths from Brink, et al.
+    (2025)
     ---------------------------------------------------------------------------
     """
     # create new Specifications object for reform simulation
@@ -158,7 +159,8 @@ def main():
 
     """
     ---------------------------------------------------------------------------
-    Simulate the scenario consistent with excess deaths from Kenny and Sandefur (2025)
+    Simulate the scenario consistent with excess deaths from Kenny and Sandefur
+    (2025)
     ---------------------------------------------------------------------------
     """
     # create new Specifications object for reform simulation
@@ -191,14 +193,14 @@ def main():
     runner(p4, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
 
-    """
-    ---------------------------------------------------------------------------
-    Simulate "AIM-high" scenario (and 150% of productivity losses)
-    Estimated deaths from Annals of Internal Medicine (AIM) Susceptible
-    scenario, complete cutback (PEPFAR = 0%) = 1_326_000 over 10 years + CGD
-    estimates for the other diseases
-    ---------------------------------------------------------------------------
-    """
+    # """
+    # ---------------------------------------------------------------------------
+    # Simulate "AIM-high" scenario (and 150% of productivity losses)
+    # Estimated deaths from Annals of Internal Medicine (AIM) Susceptible
+    # scenario, complete cutback (PEPFAR = 0%) = 1_326_000 over 10 years + CGD
+    # estimates for the other diseases
+    # ---------------------------------------------------------------------------
+    # """
     # # create new Specifications object for reform simulation
     # p5 = copy.deepcopy(p)
     # p5.baseline = False
@@ -259,9 +261,9 @@ def main():
             "params": safe_read_pickle(
                 os.path.join(medium_dir, "model_params.pkl")
             ),
-            "deaths": median_deaths,
+            "deaths": medium_deaths,
         },
-        r"Kenny and Sandefur (2025)": {
+        "Kenny and Sandefur (2025)": {
             "tpi_vars": safe_read_pickle(
                 os.path.join(high_dir, "TPI", "TPI_vars.pkl")
             ),

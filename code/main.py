@@ -74,7 +74,7 @@ def main():
     ) = get_pop_data.baseline_pop(p)
     p.update_specifications(pop_dict)
 
-    Run model
+    # Run model
     start_time = time.time()
     runner(p, time_path=True, client=client)
     print("run time = ", time.time() - start_time)

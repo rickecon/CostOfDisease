@@ -46,7 +46,7 @@ def plots(
     param_list = [base_params] + [
         reform_dict[k]["params"] for k in reform_dict.keys()
     ]
-    labels_list = ["With US Aid"] + [k for k in reform_dict.keys()]
+    labels_list = ["With US aid"] + [k for k in reform_dict.keys()]
     # Plot mort rates in different scenarios
     years = [BASELINE_YEAR_TO_PLOT]
     p0 = param_list[0]
@@ -58,7 +58,7 @@ def plots(
             plt.plot(
                 age_per[:-1],
                 p.rho[t, :-1],
-                label=labels_list[i] + " " + str(y),
+                label=labels_list[i],
             )
     plt.xlabel(r"Age $s$ (model periods)")
     plt.ylabel(r"Mortality Rates $\rho_{s}$")

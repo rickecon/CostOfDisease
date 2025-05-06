@@ -76,7 +76,7 @@ def main():
 
     # Run model
     start_time = time.time()
-    # runner(p, time_path=True, client=client)
+    runner(p, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
 
     """
@@ -118,7 +118,7 @@ def main():
 
     # Run model
     start_time = time.time()
-    # runner(p2, time_path=True, client=client)
+    runner(p2, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
 
     """
@@ -153,7 +153,7 @@ def main():
 
     # Run model
     start_time = time.time()
-    # runner(p3, time_path=True, client=client)
+    runner(p3, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
 
     """
@@ -188,14 +188,15 @@ def main():
 
     # Run model
     start_time = time.time()
-    # runner(p4, time_path=True, client=client)
+    runner(p4, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
 
     """
     ---------------------------------------------------------------------------
     Simulate "AIM-high" scenario (and 150% of productivity losses)
-    Estimated deaths from Annals of Internal Medicine (AIM) Susceptible scenario,
-    complete cutback (PEPFAR = 0%) = 1_326_000 over 10 years + CGD estimates for the other diseases
+    Estimated deaths from Annals of Internal Medicine (AIM) Susceptible
+    scenario, complete cutback (PEPFAR = 0%) = 1_326_000 over 10 years + CGD
+    estimates for the other diseases
     ---------------------------------------------------------------------------
     """
     # # create new Specifications object for reform simulation

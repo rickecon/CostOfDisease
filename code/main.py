@@ -33,10 +33,10 @@ def main():
     CUR_DIR = os.path.dirname(os.path.realpath(__file__))
     save_dir = os.path.join(CUR_DIR, "CostOutput")
     base_dir = os.path.join(save_dir, "BASELINE")
-    median_dir = os.path.join(save_dir, "MedianDeaths")
+    medium_dir = os.path.join(save_dir, "MediumDeaths")
     low_dir = os.path.join(save_dir, "LowDeaths")
     high_dir = os.path.join(save_dir, "HighDeaths")
-    aim_dir = os.path.join(save_dir, "AIMDeaths")
+    # aim_dir = os.path.join(save_dir, "AIMDeaths")
 
     plot_path = os.path.join(save_dir, "Plots")
     if not os.path.exists(plot_path):
@@ -81,14 +81,15 @@ def main():
 
     """
     ---------------------------------------------------------------------------
-    Simulate the scenario consistent with excess deaths from Gandhi et al. (2025)
+    Simulate the scenario consistent with excess deaths from Gandhi et al.
+    (2025)
     ---------------------------------------------------------------------------
     """
 
     # create new Specifications object for reform simulation
     p2 = copy.deepcopy(p)
     p2.baseline = False
-    p2.output_base = median_dir
+    p2.output_base = medium_dir
 
     # Find new population with excess deaths
     new_pop_dict, median_deaths = get_pop_data.disease_pop(
@@ -252,10 +253,10 @@ def main():
         },
         "Gandhi, et al. (2025)": {
             "tpi_vars": safe_read_pickle(
-                os.path.join(median_dir, "TPI", "TPI_vars.pkl")
+                os.path.join(medium_dir, "TPI", "TPI_vars.pkl")
             ),
             "params": safe_read_pickle(
-                os.path.join(median_dir, "model_params.pkl")
+                os.path.join(medium_dir, "model_params.pkl")
             ),
             "deaths": median_deaths,
         },

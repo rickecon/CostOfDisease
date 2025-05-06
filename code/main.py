@@ -193,46 +193,6 @@ def main():
     runner(p4, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
 
-    # """
-    # ---------------------------------------------------------------------------
-    # Simulate "AIM-high" scenario (and 150% of productivity losses)
-    # Estimated deaths from Annals of Internal Medicine (AIM) Susceptible
-    # scenario, complete cutback (PEPFAR = 0%) = 1_326_000 over 10 years + CGD
-    # estimates for the other diseases
-    # ---------------------------------------------------------------------------
-    # """
-    # # create new Specifications object for reform simulation
-    # p5 = copy.deepcopy(p)
-    # p5.baseline = False
-    # p5.output_base = aim_dir
-
-    # # Find new population with excess deaths
-    # new_pop_dict, aims_deaths = get_pop_data.disease_pop(
-    #     p5,
-    #     pop_dist,
-    #     pre_pop_dist,
-    #     fert_rates,
-    #     mort_rates,
-    #     infmort_rates,
-    #     imm_rates,
-    #     UN_COUNTRY_CODE,
-    #     excess_deaths=133_081,  # AIM Susceptible scenario, complete cutback (PEPFAR = 0%) = 1_326_000 excess deaths over 10 years + CGD estimates for the other diseases
-    #     # 10_481
-    # )
-    # p5.update_specifications(new_pop_dict)
-
-    # # High productivity adjustment scenario
-    # high_prod = total_adjustment * 1.5
-
-    # # Update the disutility of labor matrix for the entire population
-    # p5.chi_n = p5.chi_n * (1 + high_prod)
-
-    # # Run model
-    # start_time = time.time()
-    # # runner(p5, time_path=True, client=client)
-    # print("run time = ", time.time() - start_time)
-    # client.close()
-
     """
     ---------------------------------------------------------------------------
     Create output

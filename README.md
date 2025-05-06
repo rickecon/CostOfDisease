@@ -19,7 +19,7 @@ We have a Python script in the [`/code/`](code/) directory of this repository ca
     * [`./code/CostOutput`](code/CostOutput): Directory in which all the parameters, equilibrium output, and plots and tables output from the baseline and three reform scenarios are stored.
 * [`LICENSE`](LICENSE): Creative Commons open source license for this repository.
 * [`README.md`](README.md): README file with instructions on the content of and how to use this repository.
-* [`./writing/](writing/): Directory in which all of the draft LaTeX files and image files are stored.
+* [`./writing/`](writing/): Directory in which all of the draft LaTeX files and image files are stored.
     * [`./writing/disease.bib`](writing/disease.bib): BibTeX bibliography file for LaTeX paper references.
     * [`./writing/main.pdf`](writing/main.pdf): PDF file of paper.
     * [`./writing/main.tex`](writing/main.tex): LaTeX file of paper.

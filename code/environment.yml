@@ -2,7 +2,7 @@ name: disease-dev
 channels:
 - conda-forge
 dependencies:
-- python>=3.7.7, <3.13
+- python>=3.12, <3.13
 - numpy
 - numba>=0.54
 - scipy>=1.7.1
@@ -24,5 +24,5 @@ dependencies:
 - pip:
   - openpyxl>=3.1.2
   - pandas-datareader
-  - ogcore
-  - ogzaf
+  - ogcore==0.14.3
+  - ogzaf==0.0.8

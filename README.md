@@ -43,6 +43,7 @@ The following are the steps to fully replicating all of our analyses in the pape
 * [`.gitignore`](.gitignore): A Git software hidden file that tells Git which files and directories in which to ignore changes in the version history.
 * [`./code/`](code/): Directory in which all the code and output of the model is stored.
     * [`./code/CostOutput`](code/CostOutput): Directory in which all the parameters, equilibrium output, and plots and tables output from the baseline and three reform scenarios are stored.
+    * [`./code/environment.yml`](code/environment.yml): Conda environment file.
 * [`LICENSE`](LICENSE): Creative Commons open source license for this repository.
 * [`README.md`](README.md): README file with instructions on the content of and how to use this repository.
 * [`./writing/`](writing/): Directory in which all of the draft LaTeX files and image files are stored.
@@ -50,4 +51,5 @@ The following are the steps to fully replicating all of our analyses in the pape
     * [`./writing/main.pdf`](writing/main.pdf): PDF file of paper.
     * [`./writing/main.tex`](writing/main.tex): LaTeX file of paper.
     * [`./writing/tables_figures/`](writing/tables_figures/): Directory where all the image files for figures and LaTex table files for the tables are stored.
-        * []():
+        * [`./writing/tables_figures/cumulative_excess_deaths.png`](writing/tables_figures/cumulative_excess_deaths.png): Image file for Figure 1.
+        * [`./writing/tables_figures/mortality_rates.png`](writing/tables_figures/mortality_rates.png): Image file for Figure 2.

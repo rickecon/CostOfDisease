@@ -33,10 +33,10 @@ def main():
     CUR_DIR = os.path.dirname(os.path.realpath(__file__))
     save_dir = os.path.join(CUR_DIR, "CostOutput")
     base_dir = os.path.join(save_dir, "BASELINE")
-    median_dir = os.path.join(save_dir, "MedianDeaths")
+    medium_dir = os.path.join(save_dir, "MediumDeaths")
     low_dir = os.path.join(save_dir, "LowDeaths")
     high_dir = os.path.join(save_dir, "HighDeaths")
-    aim_dir = os.path.join(save_dir, "AIMDeaths")
+    # aim_dir = os.path.join(save_dir, "AIMDeaths")
 
     plot_path = os.path.join(save_dir, "Plots")
     if not os.path.exists(plot_path):
@@ -76,22 +76,23 @@ def main():
 
     # Run model
     start_time = time.time()
-    # runner(p, time_path=True, client=client)
+    runner(p, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
 
     """
     ---------------------------------------------------------------------------
-    Simulate the scenario consistent with excess deaths from Gandhi et al. (2025)
+    Simulate the scenario consistent with excess deaths from Gandhi et al.
+    (2025)
     ---------------------------------------------------------------------------
     """
 
     # create new Specifications object for reform simulation
     p2 = copy.deepcopy(p)
     p2.baseline = False
-    p2.output_base = median_dir
+    p2.output_base = medium_dir
 
     # Find new population with excess deaths
-    new_pop_dict, median_deaths = get_pop_data.disease_pop(
+    new_pop_dict, medium_deaths = get_pop_data.disease_pop(
         p2,
         pop_dist,
         pre_pop_dist,
@@ -117,12 +118,13 @@ def main():
 
     # Run model
     start_time = time.time()
-    # runner(p2, time_path=True, client=client)
+    runner(p2, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
 
     """
     ---------------------------------------------------------------------------
-    Simulate the scenario consistent with excess deaths from Brink et al. (2025)
+    Simulate the scenario consistent with excess deaths from Brink, et al.
+    (2025)
     ---------------------------------------------------------------------------
     """
     # create new Specifications object for reform simulation
@@ -152,12 +154,13 @@ def main():
 
     # Run model
     start_time = time.time()
-    # runner(p3, time_path=True, client=client)
+    runner(p3, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
 
     """
     ---------------------------------------------------------------------------
-    Simulate the scenario consistent with excess deaths from Kenny and Sandefur (2025)
+    Simulate the scenario consistent with excess deaths from Kenny and Sandefur
+    (2025)
     ---------------------------------------------------------------------------
     """
     # create new Specifications object for reform simulation
@@ -187,47 +190,8 @@ def main():
 
     # Run model
     start_time = time.time()
-    # runner(p4, time_path=True, client=client)
+    runner(p4, time_path=True, client=client)
     print("run time = ", time.time() - start_time)
-
-    """
-    ---------------------------------------------------------------------------
-    Simulate "AIM-high" scenario (and 150% of productivity losses)
-    Estimated deaths from Annals of Internal Medicine (AIM) Susceptible scenario,
-    complete cutback (PEPFAR = 0%) = 1_326_000 over 10 years + CGD estimates for the other diseases
-    ---------------------------------------------------------------------------
-    """
-    # # create new Specifications object for reform simulation
-    # p5 = copy.deepcopy(p)
-    # p5.baseline = False
-    # p5.output_base = aim_dir
-
-    # # Find new population with excess deaths
-    # new_pop_dict, aims_deaths = get_pop_data.disease_pop(
-    #     p5,
-    #     pop_dist,
-    #     pre_pop_dist,
-    #     fert_rates,
-    #     mort_rates,
-    #     infmort_rates,
-    #     imm_rates,
-    #     UN_COUNTRY_CODE,
-    #     excess_deaths=133_081,  # AIM Susceptible scenario, complete cutback (PEPFAR = 0%) = 1_326_000 excess deaths over 10 years + CGD estimates for the other diseases
-    #     # 10_481
-    # )
-    # p5.update_specifications(new_pop_dict)
-
-    # # High productivity adjustment scenario
-    # high_prod = total_adjustment * 1.5
-
-    # # Update the disutility of labor matrix for the entire population
-    # p5.chi_n = p5.chi_n * (1 + high_prod)
-
-    # # Run model
-    # start_time = time.time()
-    # # runner(p5, time_path=True, client=client)
-    # print("run time = ", time.time() - start_time)
-    # client.close()
 
     """
     ---------------------------------------------------------------------------
@@ -241,7 +205,7 @@ def main():
     # If do other sims (e.g, with high and low forecasts of excess deaths), they
     # can be added to this dictionary
     reform_dict = {
-        "Brink et al. (2025)": {
+        "Brink, et al. (2025)": {
             "tpi_vars": safe_read_pickle(
                 os.path.join(low_dir, "TPI", "TPI_vars.pkl")
             ),
@@ -250,16 +214,16 @@ def main():
             ),
             "deaths": low_deaths,
         },
-        "Gandhi et al. (2025)": {
+        "Gandhi, et al. (2025)": {
             "tpi_vars": safe_read_pickle(
-                os.path.join(median_dir, "TPI", "TPI_vars.pkl")
+                os.path.join(medium_dir, "TPI", "TPI_vars.pkl")
             ),
             "params": safe_read_pickle(
-                os.path.join(median_dir, "model_params.pkl")
+                os.path.join(medium_dir, "model_params.pkl")
             ),
-            "deaths": median_deaths,
+            "deaths": medium_deaths,
         },
-        r"Kenny & Sandefur (2025)": {
+        "Kenny and Sandefur (2025)": {
             "tpi_vars": safe_read_pickle(
                 os.path.join(high_dir, "TPI", "TPI_vars.pkl")
             ),

@@ -46,7 +46,7 @@ def plots(
     param_list = [base_params] + [
         reform_dict[k]["params"] for k in reform_dict.keys()
     ]
-    labels_list = ["With US Aid"] + [k for k in reform_dict.keys()]
+    labels_list = ["With US aid"] + [k for k in reform_dict.keys()]
     # Plot mort rates in different scenarios
     years = [BASELINE_YEAR_TO_PLOT]
     p0 = param_list[0]
@@ -58,7 +58,7 @@ def plots(
             plt.plot(
                 age_per[:-1],
                 p.rho[t, :-1],
-                label=labels_list[i] + " " + str(y),
+                label=labels_list[i],
             )
     plt.xlabel(r"Age $s$ (model periods)")
     plt.ylabel(r"Mortality Rates $\rho_{s}$")
@@ -75,7 +75,7 @@ def plots(
         print(
             year,
             " diff: ",
-            reform_dict["Brink et al. (2025)"]["params"].rho[
+            reform_dict["Brink, et al. (2025)"]["params"].rho[
                 year - base_params.start_year, 50
             ]
             - base_params.rho[year - base_params.start_year, 50],
@@ -105,7 +105,7 @@ def plots(
     # Plot differences in productivity profiles
     fig = pp.plot_ability_profiles(
         base_params,
-        p2=reform_dict["Gandhi et al. (2025)"]["params"],
+        p2=reform_dict["Gandhi, et al. (2025)"]["params"],
         log_scale=True,
         t=BASELINE_YEAR_TO_PLOT - base_params.start_year,
         include_title=False,
@@ -125,8 +125,8 @@ def plots(
     fig = op.tpi_profiles(
         base_tpi,
         base_params,
-        reform_dict["Gandhi et al. (2025)"]["tpi_vars"],
-        reform_dict["Gandhi et al. (2025)"]["params"],
+        reform_dict["Gandhi, et al. (2025)"]["tpi_vars"],
+        reform_dict["Gandhi, et al. (2025)"]["params"],
         by_j=False,
         var="n",
         num_years=5,

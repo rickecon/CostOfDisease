@@ -177,19 +177,33 @@ To simulate the economic impact of disease-related morbidity among working-age i
 
 The HIV-related productivity shock is grounded in the International Labour Office (ILO) global estimates of the economic impact of AIDS \citep{ILO2018}. That methodology distinguishes between several channels through which HIV affects the labor market: (1) premature mortality, (2) reduced productivity among HIV-positive individuals who remain employed, (3) absenteeism due to illness or caregiving responsibilities, and (4) turnover and retraining costs. The first channel is captured using our mortality scenarios described above, while this section focuses on the productivity losses due to absenteeism and partial labor force withdrawal.
 
-Our simulation assumes a reversal of the substantial labor market gains achieved since 2005 due to reduced HIV service coverage (e.g., PEPFAR withdrawal). ILO data for South Africa from 2005 to 2020 show a sharp decline in the number of individuals partially or fully unable to work due to HIV—from over 163,000 in 2005 to fewer than 2,300 in 2020—due to improved access to ART and labor market inclusion. To quantify this we follow ILO's ``high impact'' scenario, which assumes that 50\% of HIV-positive individuals in the labor force become partially unable to work, and historical shares of those fully unable to work \textcolor{magenta}{[What does this last phrase mean?]}. Using 2020 ILO data, we apply this 50\% impairment rate to the estimated HIV prevalence in the labor force (23.9\%), covering adults aged 15-64. This calculation yields an effective reduction in labor force participation of 0.036\% by 2040.
+ILO data for South Africa from 2005 to 2020 show a sharp decline in the number of individuals partially or fully unable to work due to HIV---from over 163,000 in 2005 to fewer than 2,300 in 2020. This decline reflects improved access to antiretroviral therapy and greater inclusion of HIV-positive individuals in the labor market. As a share of the working-age population (ages 15--64), total absenteeism fell from approximately 0.52\% in 2005 to just 0.006\% in 2020. In our simulation, we assume a reversal of these gains, returning to the 2005 level of absenteeism. The rate of absenteeism due to HIV is calculated as:
+\[
+\textit{absenteeism} = (\textit{partial share} \times \textit{impairment rate}) + \textit{full share}
+\]
+In 2005, the partial and full shares were 0.35\% and 0.17\%, respectively. We apply the ILO’s ``high impact'' scenario for the impairment rate, which assumes a 55\% productivity loss for those partially unable to work \citep{ILO2018}. This yields a total absenteeism rate of 0.361\%.
 
-For tuberculosis, we apply an additional uniform labor supply penalty of 0.03\%, based on South Africa's 2023 TB incidence by age and empirical estimates of lost workdays taken from a study of the impact of tuberculosis on productivity in India \citep{Keogh2024}. The estimate assumes a high-impact scenario of 0.1442\% absenteeism loss per TB case, reflecting reduced access to diagnosis and treatment. This is applied to the prevalence of TB in the working age population and held constant over time.
+For tuberculosis, we apply an additional uniform labor supply penalty based on South Africa's 2023 TB incidence by age and empirical estimates of productivity loss from \citet{Keogh2024}, which studied the impact of TB on work absences in India. The estimate assumes a high-impact scenario in which each TB case results in a 14.4\% impact on work absences.\footnote{The paper estimates a 17.3\% increase on absences, which is then adjusted to reflect a 6-day workweek in the Indian context. The result is a 14.4\% impact} We apply this absenteeism rate to the total share of the working-age population (ages 15 and above) with current and additional TB cases. To isolate the net impact, we subtract the baseline productivity loss—calculated by applying the low-impact scenario to current TB cases—from the total productivity loss under the high-impact scenario applied to all TB cases. This yields a net TB-related adjustment of 0.0276\%, which is held constant over the simulation horizon.
 
-The HIV-related and TB-related productivity shocks are combined to total a penalty of 0.00388 each year \textcolor{magenta}{[What does this mean?]}. This factor adjusts the labor disutility parameter in the model and is applied to the bottom 70\% of the skill distribution among working-age individuals (ages 20-64).\footnote{This is the $\chi^n_s$ described in the OG-Core model documentation and reflects the relative value of leisure versus consumption in the household's utility function.} Applying these changes to only the bottom percentiles is intended to reflect the lower access to additional healthcare resources among this group and thus lowered ability to treat the chronic effects of disease that lead to lower labor force participation.  The changes are held constant throughout the simulation to reflect persistent productivity losses in the absence of expanded care.  The changes in the disutility of labor result in declines in labor force participation as we expect from increased disease prevalence.
+The HIV-related and TB-related productivity shocks are combined to produce a total annual labor supply penalty of 0.388\% (0.361\% + 0.0276\%). This value adjusts the labor disutility parameter in the model and is applied uniformly to the bottom 70\% of the skill distribution among working-age individuals (ages 20–64), reflecting greater vulnerability to untreated illness in lower-income populations.\footnote{This is the $\chi^n_s$ described in the OG-Core model documentation and reflects the relative value of leisure versus consumption in the household's utility function.} Applying these changes to only the bottom percentiles is intended to reflect the lower access to additional healthcare resources among this group and thus lowered ability to treat the chronic effects of disease that lead to lower labor force participation. The changes are held constant throughout the simulation to reflect persistent productivity losses in the absence of expanded care. The changes in the disutility of labor result in declines in labor force participation as we expect from increased disease prevalence.
 
-We apply the 0.039\% adjustment in our mid-range scenario (with excess deaths following estimates of \citet{Gandhi2025}), while the low and and high-impact scenarios apply adjustments of 0.019\% and 0.058\%, respectively.
+We apply the 0.388\% adjustment in our mid-range scenario, while the low- and high-impact scenarios apply adjustments equal to 50\% and 150\% of this value, resulting in 0.194\% and 0.582\%, respectively. Table \ref{tab:scenarios} presents a summary of each scenario parameters.
 
-% \begin{figure}[H]
-%     \caption{Disutility of labor with and without aid}
-%     \centering
-%     \includegraphics[scale=0.75]{./tables_figures/labor_supply.png}
-% \end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Summary of Mortality and Absenteeism Assumptions by Scenario}
+\label{tab:scenarios}
+\begin{tabular}{lccl}
+\toprule
+Scenario & \shortstack{Study} & \shortstack{Excess deaths \\ {(annual)}} & \shortstack{Absenteeism Impact} \\
+\midrule
+Low     & \citet{Brink2025}   & 98,350    & 0.194\% (50\% of baseline) \\
+Medium  & \citet{Gandhi2025}  & 132,600   & 0.388\% (baseline) \\
+High    & \citet{KS2025}      & 192,212   & 0.582\% (150\% of baseline) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 
 \section{The Economic Costs of Disease}\label{SecResults}

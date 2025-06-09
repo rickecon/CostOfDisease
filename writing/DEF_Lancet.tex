@@ -19,6 +19,9 @@
 \usepackage{listings}
 \lstset{basicstyle=\footnotesize\ttfamily, language=Python, showstringspaces=false}
 
+% to skip line between paragraphs and not indent
+\usepackage[parfill]{parskip}
+
 % for midline decimals
 \usepackage{siunitx}
 \sisetup{
@@ -88,19 +91,19 @@
 \begin{abstract}
 \small{
 \noindent \emph{Background:}
-Public health funding from foreign sources, particularly the United States, have been instrumental in managing contagious disease in South Africa.  The US government's pausing of aid in January 2025 has raised concerns about the potential resurgence of HIV/AIDS and tuberculosis (TB) in South Africa, which could have significant public health and economic consequences.  We use an economic model of South Africa to simulate the potential economic consequences of reductions in foreign aid for public health.
+Public health funding from foreign sources, particularly the United States, have been instrumental in managing contagious disease in South Africa. The US government's pausing of aid in January 2025 has raised concerns about the potential resurgence of HIV/AIDS and tuberculosis (TB) in South Africa, which could have significant public health and economic consequences. We use an economic model of South Africa to simulate the potential economic consequences of reductions in foreign aid for public health.
 
 \ \\
 \emph{Methods:}
-We simulate the economic consequences of a resurgence of HIV/AIDS and TB in South Africa using an overlapping generations, general equilibrium model calibrated to the South African economy.  We use estimates of excess mortality from three independent studies to simulate the effects of increased disease burden on mortality and labor productivity.  We then simulate the effects of these changes on the South African economy over the medium and long run.
+We simulate the economic consequences of a resurgence of HIV/AIDS and TB in South Africa using an overlapping generations, general equilibrium model calibrated to the South African economy. We use estimates of excess mortality from three independent studies to simulate the effects of increased disease burden on mortality and labor productivity. We then simulate the effects of these changes on the South African economy over the medium and long run.
 
 \ \\
 \emph{Findings:}
-Our simulations show large and persistent economic costs from increased disease burden.  In our preferred specification, the costs of US aid cuts to South Africa exceed \$1.4 trillion dollars in net present value, reducing economic output by more than 3.5\%. This is roughly 56 times the net present value of continuing US aid at 2024 levels indefinitely. Even in our most optimistic scenario, the net present value of economic losses exceeds \$525 billion.
+Our simulations show large and persistent economic costs from increased disease burden. In our preferred specification, the costs of US aid cuts to South Africa exceed \$1.4 trillion dollars in net present value, reducing economic output by more than 3.5\%. This is roughly 56 times the net present value of continuing US aid at 2024 levels indefinitely. Even in our most optimistic scenario, the net present value of economic losses exceeds \$525 billion.
 
 \ \\
 \emph{Interpretation:}
-The findings shed light on the economic costs of disease and the fragility of health systems that are highly dependent on external financing.  The results highlight the importance of continued investment in public health, particularly in low- and middle-income countries, to prevent the resurgence of contagious diseases and their associated economic costs.
+The findings shed light on the economic costs of disease and the fragility of health systems that are highly dependent on external financing. The results highlight the importance of continued investment in public health, particularly in low- and middle-income countries, to prevent the resurgence of contagious diseases and their associated economic costs.
 
 \ \\
 \emph{Funding:}
@@ -150,7 +153,7 @@ By simulating these scenarios, this paper contributes to understanding the long-
 
 \section{Methodology}\label{SecMethod}
 
-We estimate the macroeconomic effects of increased disease burden using the OG-ZAF macroeconomic model.\footnote{OG-ZAF is an open source large scale dynamic general equilibrium overlapping generations model of the South African macroeconomy. Documentation for OG-ZAF is available at \href{https://eapd-drb.github.io/OG-ZAF}{https://eapd-drb.github.io/OG-ZAF}.  Documentation for the core engine OG-Core is available at \href{https://pslmodels.github.io/OG-Core}{https://pslmodels.github.io/OG-Core}.} OG-ZAF is a dynamic overlapping generations general equilibrium model calibrated to the demographic dynamics, economic parameters, and fiscal system of South Africa. It includes explicit modeling of household and firm behavior, government transfers and taxes, and age-specific labor supply and mortality rates. One of the key features of this modeling framework is its ability to capture both the direct and indirect effects of disease on the economy. The direct effects of disease include reductions in labor supply and productivity due to increased mortality and morbidity. The indirect effects include changes in capital accumulation, government budgets, and market prices, which will in turn affect labor supply and the overall economy.
+We estimate the macroeconomic effects of increased disease burden using the OG-ZAF macroeconomic model.\footnote{OG-ZAF is an open source large scale dynamic general equilibrium overlapping generations model of the South African macroeconomy. Documentation for OG-ZAF is available at \href{https://eapd-drb.github.io/OG-ZAF}{https://eapd-drb.github.io/OG-ZAF}. Documentation for the core engine OG-Core is available at \href{https://pslmodels.github.io/OG-Core}{https://pslmodels.github.io/OG-Core}.} OG-ZAF is a dynamic overlapping generations general equilibrium model calibrated to the demographic dynamics, economic parameters, and fiscal system of South Africa. It includes explicit modeling of household and firm behavior, government transfers and taxes, and age-specific labor supply and mortality rates. One of the key features of this modeling framework is its ability to capture both the direct and indirect effects of disease on the economy. The direct effects of disease include reductions in labor supply and productivity due to increased mortality and morbidity. The indirect effects include changes in capital accumulation, government budgets, and market prices, which will in turn affect labor supply and the overall economy.
 
 We introduce exogenous shocks to mortality and productivity to reflect the effects of an abrupt reduction in external health financing. These shocks are implemented as changes to the age-specific mortality rates and labor disutility parameters in the model, capturing the consequences of untreated or poorly managed HIV and TB.
 
@@ -235,7 +238,7 @@ High    & \citet{KS2025}      & 192,212   & \num{0.582}\% (150\% of baseline) \\
 
 We simulate each of the three scenarios described above with the aforementioned adjustments to mortality and household disutility of work. The simulation results show that the macroeconomic costs of a resurgence of disease in South Africa from US aid cuts are substantial and persistent. These costs arise from sustained increases in mortality and reductions in labor force participation following the abrupt cessation of external health funding.
 
-Table \ref{tab:avgGDPChange} presents the average annual GDP losses over the first 20 years of the simulation horizon. In the medium scenario, our preferred specification, South Africa's GDP declines by approximately \$\num{14.8} billion per year (in 2025 US dollars), or about \num{3.5}\% of GDP. Under the low excess deaths scenario, the annual loss is about \$11 billion, while in the high excess deaths scenario, the average annual GDP loss approaches \$21 billion. These losses reflect persistent reductions in effective labor supply and human capital accumulation. Recall that total global US development assistance for health was about \$21 billion in 2021, about the same as the average annual GDP loss in the high excess death scenario. If we compare these average annual reductions in GDP to US health assistance to South Africa only, which was \$462 million in 2023, the benefit to cost ratio would be about 22 to 1 in the low excess death scenario (lost GDP of \$11B to assistance of \$\num{0.5}B).\footnote{See \href{https://foreignassistance.gov}{https://foreignassistance.gov}.} We also note that GDP impacts of disease are a very narrow measure of the true benefits to society of disease prevention.  Therefore, our estimates should be thought of as the most conservative way to think about the costs of increased disease prevalence. However, even with this strict metric, the costs-benefit ratio heavily favors the continued funding of health systems in South Africa.
+Table \ref{tab:avgGDPChange} presents the average annual GDP losses over the first 20 years of the simulation horizon. In the medium scenario, our preferred specification, South Africa's GDP declines by approximately \$\num{14.8} billion per year (in 2025 US dollars), or about \num{3.5}\% of GDP. Under the low excess deaths scenario, the annual loss is about \$11 billion, while in the high excess deaths scenario, the average annual GDP loss approaches \$21 billion. These losses reflect persistent reductions in effective labor supply and human capital accumulation. Recall that total global US development assistance for health was about \$21 billion in 2021, about the same as the average annual GDP loss in the high excess death scenario. If we compare these average annual reductions in GDP to US health assistance to South Africa only, which was \$462 million in 2023, the benefit to cost ratio would be about 22 to 1 in the low excess death scenario (lost GDP of \$11B to assistance of \$\num{0.5}B).\footnote{See \href{https://foreignassistance.gov}{https://foreignassistance.gov}.} We also note that GDP impacts of disease are a very narrow measure of the true benefits to society of disease prevention. Therefore, our estimates should be thought of as the most conservative way to think about the costs of increased disease prevalence. However, even with this strict metric, the costs-benefit ratio heavily favors the continued funding of health systems in South Africa.
 
 \begin{table}[H] \centering \captionsetup{width=6.0in}
   \caption{\label{tab:avgGDPChange}Average Annual South African GDP Change over 20 Years}
@@ -278,7 +281,7 @@ Our results underscore the fragility of growth in settings of high disease burde
 
 This analysis shows that the economic costs of a resurgence in disease following the abrupt withdrawal of external health aid are both large and persistent. In South Africa, the medium scenario---grounded in epidemiological projections and labor market data---suggests net present value GDP losses of over \$\num{1.4} trillion, which is over 56 times the amount of pre-2025 US health assistance to South Africa. Even in the most optimistic case, estimated losses exceed \$525 billion in net present value. In the high-impact scenario, losses top \$\num{2.9} trillion, more than triple the net present value of \emph{global} foreign health assistance continued indefinitely at 2024 levels. Thus, losses are not only large in absolute terms, they are disproportionate relative to the funding at stake.
 
-The economic damage stems not only from increased mortality, but also from more subtle and compounding effects: labor market withdrawal and reduced productivity.  These channels reinforce each other over time, undermining growth and worsening inequality. While the health consequences of aid withdrawal are immediate and visible, the economic consequences unfold more slowly—and are therefore at risk of being underestimated.
+The economic damage stems not only from increased mortality, but also from more subtle and compounding effects: labor market withdrawal and reduced productivity. These channels reinforce each other over time, undermining growth and worsening inequality. While the health consequences of aid withdrawal are immediate and visible, the economic consequences unfold more slowly—and are therefore at risk of being underestimated.
 
 Such large economic returns to investments in public health justify continued funding by domestic and international public health organizations. This is especially true because many developing countries lack the financial capacity and the expertise to build and maintain the necessary public health infrastructure. For this reason, public health organizations should assess the potential economic returns from health aid, negotiate methods for delivery of services, and innovate methods to finance these expenditures.
 
@@ -288,7 +291,7 @@ Such large economic returns to investments in public health justify continued fu
 All Python code, data, and documentation for the computational examples and analyses are available at \href{https://github.com/OpenSourceEcon/CostOfDisease}{https://github.com/OpenSourceEcon/CostOfDisease}.
 
 \section*{Author Contributions}
-All authors have contributed to the writing and analysis in this study.  All authors have accessed the data used to calibrate the economic model.
+All authors have contributed to the writing and analysis in this study. All authors have accessed the data used to calibrate the economic model.
 
 \section*{Conflicts of Interest}
 None

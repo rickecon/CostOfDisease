@@ -38,11 +38,13 @@ The following are the steps to fully replicating all of our analyses in the pape
     * Activate your `disease-dev` conda environment: `conda activate disease-dev`
     * Run the `main.py` Python script: `python ./code/main.py`
     * All the output will be saved in the [`./code/CostOutput/`](code/CostOutput/) directory.
+    * `get_pop_data.py`: This script has utilities to get the population data for the baseline and to compute the counterfactual population under increased mortality.
+    * `create_plots_tables.py`: This script has utilities to create plots and tables for the results.
 
 ## Files and directories in the repository
 * [`.gitignore`](.gitignore): A Git software hidden file that tells Git which files and directories in which to ignore changes in the version history.
 * [`./code/`](code/): Directory in which all the code and output of the model is stored.
-    * [`./code/CostOutput`](code/CostOutput): Directory in which all the parameters, equilibrium output, and plots and tables output from the baseline and three reform scenarios are stored.
+    * [`./code/demographic_data`](code/demographic_data): Directory in which all the demographic data for the simulations is stored as `.csv` files.
     * [`./code/environment.yml`](code/environment.yml): Conda environment file.
 * [`LICENSE`](LICENSE): Creative Commons open source license for this repository.
 * [`README.md`](README.md): README file with instructions on the content of and how to use this repository.
